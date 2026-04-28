@@ -1,52 +1,266 @@
-<!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>安东尼的妙妙屋</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="安东尼的妙妙屋"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="安东尼的妙妙屋"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="website"><meta property="og:title" content="安东尼的妙妙屋"><meta property="og:url" content="http://example.com/"><meta property="og:site_name" content="安东尼的妙妙屋"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://example.com/img/og_image.png"><meta property="article:author" content="Anthony"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://example.com/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com"},"headline":"安东尼的妙妙屋","image":["http://example.com/img/og_image.png"],"author":{"@type":"Person","name":"Anthony"},"publisher":{"@type":"Organization","name":"安东尼的妙妙屋","logo":{"@type":"ImageObject"}},"description":""}</script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Anthony — Backend & AI Agent Engineer. Java, Spring, LangChain." />
+  <meta name="author" content="Anthony" />
+  <meta property="og:title" content="Anthony" />
+  <meta property="og:description" content="Backend & AI Agent Engineer. Java · Spring · LangChain." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://czbcode.github.io" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/31618594?v=4" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#0a0e17" />
+  <title>Anthony — Backend & Agent Engineer</title>
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
+  <!-- Favicon: code bracket icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-1-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">安东尼的妙妙屋</a></div><div class="navbar-menu"><div class="navbar-end"></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-12"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-05-03T12:16:40.526Z" title="2023/5/3 20:16:40">2023-05-03</time>发表</span><span class="level-item"><time dateTime="2023-05-03T12:16:40.526Z" title="2023/5/3 20:16:40">2023-05-03</time>更新</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/05/03/hello-world/">Hello World</a></p><div class="content"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<!-- ===== Navigation ===== -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">&lt;Anthony<span>/&gt;</span></a>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 12h18M3 6h18M3 18h18"/>
+    </svg>
+  </button>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+  <a href="https://github.com/CZBcode" class="nav-github" target="_blank" rel="noopener">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    GitHub
+  </a>
+</nav>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-</div></article></div></div><!--!--><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">安东尼的妙妙屋</a><p class="is-size-7"><span>&copy; 2023 Anthony</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script src="/js/column.js"></script><!--!--><script src="/js/main.js" defer></script><!--!--></body></html>
+<!-- ===== Hero ===== -->
+<main>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Available for collaboration
+        </div>
+
+        <h1>
+          <span class="name">Anthony</span><br/>
+          <span class="cursor"></span>
+        </h1>
+
+        <p class="hero-role">
+          <span class="tag">Backend</span>
+          <span class="tag">Agent Engineer</span>
+          <span style="color:var(--text-muted);margin-left:0.25rem">@ CZBcode</span>
+        </p>
+
+        <p class="hero-desc">
+          后端 &amp; AI Agent 工程师，专注于 Java / Spring 生态与 LLM 应用构建。
+          热衷于用代码解决复杂问题，在 LangChain 和 Spring Boot 上有丰富实战经验。
+          相信好的工程 = 简洁 × 可靠 × 可演进。
+        </p>
+
+        <div class="hero-actions">
+          <a href="projects.html" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L12 3 4 7M20 7l-8 13-8-13M20 7H4"/></svg>
+            View Projects
+          </a>
+          <a href="about.html" class="btn btn-outline">
+            About Me →
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="num" id="stat-repos">14</div>
+            <div class="label">Repositories</div>
+          </div>
+          <div class="stat">
+            <div class="num">1</div>
+            <div class="label">Follower</div>
+          </div>
+          <div class="stat">
+            <div class="num">1</div>
+            <div class="label">Following</div>
+          </div>
+          <div class="stat">
+            <div class="num">2017</div>
+            <div class="label">Joined GitHub</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Tech Stack ===== -->
+  <section class="section" id="tech">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-label">// Tech Stack</div>
+        <h2 class="section-title">技术栈<span class="line"></span></h2>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">☕</div>
+          <div class="tech-card-title">Java</div>
+          <div class="tech-card-desc">6 年+ 经验，主力后端语言。JVM 调优、并发编程、设计模式深度实践。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">JVM</span>
+            <span class="tag-chip">Java 17+</span>
+            <span class="tag-chip">Maven</span>
+            <span class="tag-chip">Gradle</span>
+          </div>
+        </div>
+
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">🌱</div>
+          <div class="tech-card-title">Spring Framework</div>
+          <div class="tech-card-desc">Spring Boot / Spring Cloud / Spring Security 全栈应用，微服务架构设计与实现。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">Spring Boot</span>
+            <span class="tag-chip">Spring Cloud</span>
+            <span class="tag-chip">Spring Security</span>
+            <span class="tag-chip">JPA</span>
+          </div>
+        </div>
+
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">🧠</div>
+          <div class="tech-card-title">LangChain & LLM</div>
+          <div class="tech-card-desc">AI Agent 开发，RAG 检索增强生成，Prompt 工程，多模态 LLM 应用集成。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">LangChain</span>
+            <span class="tag-chip">RAG</span>
+            <span class="tag-chip">OpenAI</span>
+            <span class="tag-chip">Vector DB</span>
+          </div>
+        </div>
+
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">🐳</div>
+          <div class="tech-card-title">DevOps & Infra</div>
+          <div class="tech-card-desc">Docker 容器化，Kubernetes 编排，CI/CD 流水线构建与维护。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">Docker</span>
+            <span class="tag-chip">K8s</span>
+            <span class="tag-chip">GitHub Actions</span>
+            <span class="tag-chip">Linux</span>
+          </div>
+        </div>
+
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">🗄️</div>
+          <div class="tech-card-title">Data & Messaging</div>
+          <div class="tech-card-desc">MySQL / PostgreSQL 数据库设计与优化，Redis 缓存，Kafka / RabbitMQ 消息队列。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">MySQL</span>
+            <span class="tag-chip">Redis</span>
+            <span class="tag-chip">Kafka</span>
+            <span class="tag-chip">MongoDB</span>
+          </div>
+        </div>
+
+        <div class="tech-card fade-in">
+          <div class="tech-card-icon">🔧</div>
+          <div class="tech-card-title">Tools & Ecosystem</div>
+          <div class="tech-card-desc">Git 版本控制，Elasticsearch 搜索，Maven/Gradle 依赖管理，RESTful API 设计。</div>
+          <div class="tech-card-tags">
+            <span class="tag-chip">Git</span>
+            <span class="tag-chip">ES</span>
+            <span class="tag-chip">REST</span>
+            <span class="tag-chip">gRPC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Recent Projects ===== -->
+  <section class="section" id="projects" style="background:var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-label">// Projects</div>
+        <h2 class="section-title">开源项目<span class="line"></span></h2>
+      </div>
+
+      <div class="projects-grid" id="projects-grid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Recent Posts ===== -->
+  <section class="section" id="blog">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-label">// Blog</div>
+        <h2 class="section-title">最新文章<span class="line"></span></h2>
+      </div>
+
+      <div class="blog-list">
+        <a href="blog/hello-world.html" class="blog-card fade-in">
+          <div class="blog-date">
+            <div class="month">May</div>
+            <div class="day">03</div>
+            <div class="year">2023</div>
+          </div>
+          <div class="blog-info">
+            <div class="blog-title">Hello World</div>
+            <div class="blog-excerpt">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting.</div>
+            <div class="blog-meta">
+              <span>Anthony</span>
+              <span>·</span>
+              <span>Hexo</span>
+              <span class="read-more">Read more →</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-copy">
+          &copy; 2023–<span id="year"></span> Anthony &mdash;
+          Built with <a href="https://github.com" target="_blank" rel="noopener">GitHub Pages</a>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/CZBcode" target="_blank" rel="noopener">GitHub</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  // Fetch real repo count
+  fetch('https://api.github.com/users/CZBcode').then(r => r.json()).then(d => {
+    const el = document.getElementById('stat-repos');
+    if (el && d.public_repos) el.textContent = d.public_repos;
+  }).catch(() => {});
+</script>
+</body>
+</html>
