@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent开发(5)：RAG与模型微调 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>Agent开发(5)：RAG与模型微调</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span></div>
+        <p class="post-desc">RAG检索增强全流程、模型微调技术、多模态Agent能力，突破模型知识边界</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>5.1 RAG检索增强生成</h2>
+
+<h3>文档预处理</h3>
+<ul>
+    <li>PDF/Markdown/Word解析</li>
+    <li>智能分块、切片策略调优（重叠窗口、语义分块）</li>
+</ul>
+
+<h3>双路召回</h3>
+<ul>
+    <li><strong>BM25稀疏检索</strong>：关键词匹配，精确度高</li>
+    <li><strong>向量稠密检索</strong>：语义匹配，召回率高</li>
+    <li><strong>混合召回融合</strong>：RRF（Reciprocal Rank Fusion）合并结果</li>
+</ul>
+
+<h3>后置优化</h3>
+<ul>
+    <li><strong>Rerank重排序</strong>：用交叉编码器对召回结果重新打分</li>
+    <li>上下文压缩：只保留相关片段，减少Token消耗</li>
+    <li>答案溯源：标注信息来源，防幻觉</li>
+</ul>
+
+<h2>5.2 模型微调定制</h2>
+<ul>
+    <li><strong>SFT监督微调</strong>：用标注数据微调模型</li>
+    <li><strong>LoRA轻量化微调</strong>：低秩适配，大幅降低训练成本</li>
+    <li><strong>DPO偏好对齐</strong>：直接优化模型偏好，无需奖励模型</li>
+    <li><strong>数据集构建</strong>：Agent调用轨迹数据、规划推理样本、工具调用正确样本</li>
+    <li><strong>推理部署优化</strong>：模型量化GGUF/AWQ、本地私有化部署</li>
+</ul>
+
+<h2>5.3 多模态Agent</h2>
+<ul>
+    <li><strong>视觉能力</strong>：图像理解（OCR识别、图表解析）</li>
+    <li><strong>语音能力</strong>：ASR语音转文字、TTS语音合成</li>
+    <li><strong>多模态推理</strong>：图文混合任务执行（如图表问答、截图操作）</li>
+</ul>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
