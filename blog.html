@@ -257,11 +257,11 @@
       <button class="kb-btn" onclick="collapseAll()">收起全部 ▲</button>
     </div>
 
-    <!-- 第8章 -->
+    <!-- 第0章 -->
     <div class="kb-chapter open">
       <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH8</span>
-        <span class="kb-chapter-title">行业核心痛点与解决方案</span>
+        <span class="kb-chapter-num">CH0</span>
+        <span class="kb-chapter-title">前置知识基础</span>
         <div class="kb-chapter-meta">
           <span class="kb-chapter-count">1篇</span>
           <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -269,46 +269,51 @@
       </div>
       <div class="kb-chapter-body">
         <ul class="kb-article-list">
-          <li><a href="blog/ch8-pain-points-solutions.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">模型幻觉 · 上下文超限 · 工具误调用 · 执行不稳定——四大痛点的根因分析与解决方案</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch0-basics-llm-theory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">大模型基础理论 — Transformer自注意力 / Token机制 / 采样策略 / Prompt工程</span><span class="kb-article-arrow">→</span></a></li>
         </ul>
       </div>
     </div>
 
-    <!-- 第7章 -->
+    <!-- 第1章 -->
     <div class="kb-chapter open">
       <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH7</span>
-        <span class="kb-chapter-title">业务落地场景</span>
+        <span class="kb-chapter-num">CH1</span>
+        <span class="kb-chapter-title">Agent核心理论架构</span>
         <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">1篇</span>
+          <span class="kb-chapter-count">3篇</span>
           <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       <div class="kb-chapter-body">
         <ul class="kb-article-list">
-          <li><a href="blog/ch7-scenarios.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">智能办公Agent · 研发工程Agent · 企业知识库Agent · 数据分析Agent</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch1-architecture-five-capabilities.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 五大核心原能力 — 自主规划 / 分层记忆 / 工具调用 / 反思纠错 / 环境感知</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch1-architecture-three-layer.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 三层经典架构 — 感知层 / 决策层 / 执行层 与 循环协作流程</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch1-architecture-paradigms.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 主流架构范式 — ReAct / CoT / ToT 单Agent范式 &amp; 多Agent协作模式</span><span class="kb-article-arrow">→</span></a></li>
         </ul>
       </div>
     </div>
 
-    <!-- 第6章 -->
+    <!-- 第2章 -->
     <div class="kb-chapter open">
       <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH6</span>
-        <span class="kb-chapter-title">多Agent高阶系统</span>
+        <span class="kb-chapter-num">CH2</span>
+        <span class="kb-chapter-title">四大核心能力模块</span>
         <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">1篇</span>
+          <span class="kb-chapter-count">4篇</span>
           <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       <div class="kb-chapter-body">
         <ul class="kb-article-list">
-          <li><a href="blog/ch6-multi-agent.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">多Agent角色体系 · 中心化vs去中心化协作 · 通信协议与权限隔离</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-memory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 记忆系统 Memory — 短时记忆 / 长时向量记忆 / 结构化实体记忆三层架构</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-planning.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 规划推理系统 Planning — CoT/ToT/GoT / Plan-and-Execute / AutoGPT / BabyAGI</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-tool-calling.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 工具调用系统 Tool Calling — JSON Schema规范 / 参数校验 / 编排与降级</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-reflection.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(4) 反思校验系统 Reflection — 结果自检 / 执行复盘 / 双Agent交叉校验</span><span class="kb-article-arrow">→</span></a></li>
         </ul>
       </div>
     </div>
 
-    <!-- 第5章 -->
+    <!-- 第3章 -->
     <div class="kb-chapter">
       <div class="kb-chapter-header" onclick="toggleChapter(this)">
         <span class="kb-chapter-num">CH5</span>
@@ -403,11 +408,11 @@
       </div>
     </div>
 
-    <!-- 第0章 -->
+    <!-- 第8章 -->
     <div class="kb-chapter">
       <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH0</span>
-        <span class="kb-chapter-title">前置知识基础</span>
+        <span class="kb-chapter-num">CH8</span>
+        <span class="kb-chapter-title">行业核心痛点与解决方案</span>
         <div class="kb-chapter-meta">
           <span class="kb-chapter-count">1篇</span>
           <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -415,7 +420,7 @@
       </div>
       <div class="kb-chapter-body">
         <ul class="kb-article-list">
-          <li><a href="blog/ch0-basics-llm-theory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">大模型基础理论 — Transformer自注意力 / Token机制 / 采样策略 / Prompt工程</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch8-pain-points-solutions.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">模型幻觉 · 上下文超限 · 工具误调用 · 执行不稳定——四大痛点的根因分析与解决方案</span><span class="kb-article-arrow">→</span></a></li>
         </ul>
       </div>
     </div>
