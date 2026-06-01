@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://czbcode.github.io/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://czbcode.github.io/projects.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://czbcode.github.io/blog.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://czbcode.github.io/about.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/hello-world.html</loc><changefreq>never</changefreq><priority>0.3</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch0-basics-llm-theory.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch1-architecture-five-capabilities.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch1-architecture-three-layer.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch1-architecture-paradigms.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch2-module-memory.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch2-module-planning.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch2-module-tool-calling.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch2-module-reflection.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch3-frameworks-lowcode.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch3-frameworks-code-level.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch4-enhanced-rag.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch4-enhanced-finetune.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch4-enhanced-multimodal.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch5-deployment-performance.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch5-deployment-monitoring.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch5-deployment-architecture.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch6-multi-agent.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch7-scenarios.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://czbcode.github.io/blog/ch8-pain-points-solutions.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
