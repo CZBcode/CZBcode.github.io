@@ -7,6 +7,215 @@
   <title>技术笔记 — Anthony</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ===== 知识库层次结构样式 ===== */
+    .kb-container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+
+    /* 章节组 */
+    .kb-chapter {
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(79,195,247,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+    .kb-chapter:hover {
+      border-color: rgba(79,195,247,0.28);
+    }
+
+    /* 章节头部 - 可点击折叠 */
+    .kb-chapter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+    .kb-chapter-header:hover {
+      background: rgba(79,195,247,0.05);
+    }
+
+    /* 章节编号 */
+    .kb-chapter-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #4fc3f7;
+      background: rgba(79,195,247,0.12);
+      padding: 0.15rem 0.55rem;
+      border-radius: 5px;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-right: 1rem;
+    }
+
+    /* 章节标题 */
+    .kb-chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e8e8e8;
+      flex: 1;
+    }
+
+    /* 文章计数 + 折叠箭头 */
+    .kb-chapter-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #666;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+    .kb-chapter-count {
+      color: #888;
+    }
+    .kb-chevron {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+      color: #555;
+    }
+    .kb-chapter.open .kb-chevron {
+      transform: rotate(180deg);
+      color: #4fc3f7;
+    }
+
+    /* 章章内容区（子文章列表） */
+    .kb-chapter-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .kb-chapter.open .kb-chapter-body {
+      max-height: 2000px;
+    }
+
+    /* 子文章项 */
+    .kb-article-list {
+      list-style: none;
+      padding: 0 0 0.75rem;
+      margin: 0;
+    }
+    .kb-article-item {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 1.25rem 0.6rem 2.5rem;
+      text-decoration: none;
+      color: #bbb;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+    .kb-article-item:hover {
+      color: #4fc3f7;
+      background: rgba(79,195,247,0.04);
+      border-left-color: rgba(79,195,247,0.4);
+    }
+    .kb-article-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #444;
+      margin-right: 0.85rem;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+    }
+    .kb-article-item:hover .kb-article-dot {
+      background: #4fc3f7;
+      box-shadow: 0 0 6px rgba(79,195,247,0.5);
+    }
+    .kb-article-name {
+      flex: 1;
+    }
+    .kb-article-arrow {
+      opacity: 0;
+      font-size: 0.78rem;
+      color: #4fc3f7;
+      transition: opacity 0.2s ease;
+    }
+    .kb-article-item:hover .kb-article-arrow {
+      opacity: 1;
+    }
+
+    /* 页面标题区域 */
+    .kb-hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .kb-hero-label {
+      color: #4fc3f7;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+    .kb-hero-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .kb-hero-desc {
+      color: #888;
+      font-size: 0.95rem;
+    }
+
+    /* 统计条 */
+    .kb-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .kb-stat {
+      text-align: center;
+    }
+    .kb-stat-num {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4fc3f7;
+    }
+    .kb-stat-label {
+      font-size: 0.78rem;
+      color: #777;
+      margin-top: 0.15rem;
+    }
+
+    /* 全部展开/收起按钮 */
+    .kb-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .kb-btn {
+      padding: 0.45rem 1.2rem;
+      border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 6px;
+      background: transparent;
+      color: #4fc3f7;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .kb-btn:hover {
+      background: rgba(79,195,247,0.1);
+      border-color: rgba(79,195,247,0.5);
+    }
+
+    @media (max-width: 600px) {
+      .kb-chapter-num { font-size: 0.68rem; padding: 0.1rem 0.4rem; }
+      .kb-chapter-title { font-size: 0.9rem; }
+      .kb-article-item { padding: 0.5rem 1rem 0.5rem 2rem; font-size: 0.85rem; }
+      .kb-hero-title { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -30,201 +239,188 @@
 </nav>
 
 <main>
-  <section class="section">
-    <div class="container">
-      <div class="section-header fade-in">
-        <div class="section-label">// 技术笔记</div>
-        <h2 class="section-title">Agent开发工程师知识体系<span class="line"></span></h2>
-        <p style="margin-top:0.75rem;color:var(--text-secondary);font-size:0.95rem;">
-          完整的Agent开发学习路线，从基础理论到业务落地。共9章19篇。
-        </p>
-      </div>
-
-      <div class="blog-list">
-
-        <!-- 第8章 -->
-        <a href="blog/ch8-pain-points-solutions.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第8章 · 行业核心痛点与解决方案</div>
-            <div class="blog-excerpt">模型幻觉、上下文超限、工具误调用、执行不稳定——四大痛点的根因分析与解决方案。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第7章 -->
-        <a href="blog/ch7-scenarios.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第7章 · 业务落地场景</div>
-            <div class="blog-excerpt">智能办公、研发工程、企业知识库、数据分析——四大方向的Agent落地实践。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第6章 -->
-        <a href="blog/ch6-multi-agent.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第6章 · 多Agent高阶系统</div>
-            <div class="blog-excerpt">多Agent角色体系（决策者/检索/代码/审核/调度）、中心化vs去中心化协作模式、通信协议与权限隔离。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第5章：工程部署 -->
-        <a href="blog/ch5-deployment-architecture.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第5章(3) · 服务部署架构</div>
-            <div class="blog-excerpt">FastAPI服务封装、Docker容器化、私有化部署vs Serverless、高可用架构（队列/限流/熔断/重试）。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch5-deployment-monitoring.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第5章(2) · 可观测监控体系</div>
-            <div class="blog-excerpt">全链路日志埋点（规划/工具调用/LLM请求）、核心指标统计（Token/延迟/成功率/幻觉率）、异常告警机制。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch5-deployment-performance.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第5章(1) · 性能优化方案</div>
-            <div class="blog-excerpt">缓存优化（Embedding/上下文/批量向量化）、推理加速（vLLM/SGLang/动态批处理）、上下文智能裁剪与分层减负。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第4章：增强技术栈 -->
-        <a href="blog/ch4-enhanced-multimodal.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第4章(3) · 多模态Agent</div>
-            <div class="blog-excerpt">视觉能力（图像理解+OCR）、语音能力（ASR+TTS）、图文混合任务执行与多模态推理架构。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch4-enhanced-finetune.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第4章(2) · 模型微调定制</div>
-            <div class="blog-excerpt">SFT监督微调、LoRA轻量化微调、DPO偏好对齐、Agent轨迹数据集构建、GGUF/AWQ量化与私有化部署。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch4-enhanced-rag.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第4章(1) · RAG检索增强生成</div>
-            <div class="blog-excerpt">文档预处理与智能分块、BM25+FAISS双路召回融合、Rerank重排序、上下文压缩与防幻觉溯源。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第3章：主流开发框架 -->
-        <a href="blog/ch3-frameworks-code-level.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第3章(2) · 代码级开源框架</div>
-            <div class="blog-excerpt">LangChain组件化生态、LlamaIndex长文本检索、AutoGen微软多Agent协作、CrewAI角色化流水线深度对比。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch3-frameworks-lowcode.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第3章(1) · 低代码/平台化框架</div>
-            <div class="blog-excerpt">Dify可视化工作流、FastGPT知识库问答、Coze扣子Bot搭建、FlowUs文档自动化——选型指南。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第2章：四大核心能力模块 -->
-        <a href="blog/ch2-module-reflection.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第2章(4) · 反思校验系统 Reflection</div>
-            <div class="blog-excerpt">结果自检（事实/格式/逻辑校验）、执行复盘（失败分类/Prompt迭代/错误规避）、双Agent交叉校验。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch2-module-tool-calling.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第2章(3) · 工具调用系统 Tool Calling</div>
-            <div class="blog-excerpt">JSON Schema规范定义与参数校验、通用内置工具集、自定义业务工具、串行/并行编排与异常降级。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch2-module-planning.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第2章(2) · 规划推理系统 Planning</div>
-            <div class="blog-excerpt">CoT/ToT/GoT/Self-Consistency基础推理、任务分层规划、Plan-and-Execute/AutoGPT/BabyAGI经典算法、动态纠偏。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch2-module-memory.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第2章(1) · 记忆系统 Memory</div>
-            <div class="blog-excerpt">短时记忆（滑动窗口/冗余清洗）、长时向量记忆（BGE/M3E + FAISS/Chroma/Milvus）、结构化实体记忆三层架构。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第1章：Agent核心理论架构 -->
-        <a href="blog/ch1-architecture-paradigms.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第1章(3) · 主流架构范式</div>
-            <div class="blog-excerpt">单Agent范式（ReAct/CoT/ToT/Plan-Solve/Self-Ask）与多Agent范式（角色分工/主从调度/协商博弈）详解。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch1-architecture-three-layer.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第1章(2) · 三层经典架构</div>
-            <div class="blog-excerpt">感知层（输入采集）、决策层（推理规划）、执行层（动作输出）——各层职责与感知→决策→执行→反馈循环。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <a href="blog/ch1-architecture-five-capabilities.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第1章(1) · 五大核心原能力</div>
-            <div class="blog-excerpt">自主规划、分层记忆、工具调用编排、自我反思纠错、环境感知交互——Agent从对话模型到智能体的五大能力跃迁。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
-        <!-- 第0章：前置知识基础 -->
-        <a href="blog/ch0-basics-llm-theory.html" class="blog-card fade-in">
-          <div class="blog-date"><div class="month">Jun</div><div class="day">01</div><div class="year">2026</div></div>
-          <div class="blog-info">
-            <div class="blog-title">第0章 · 前置知识基础 — 大模型基础理论</div>
-            <div class="blog-excerpt">Transformer自注意力机制、Token机制与上下文窗口限制、采样策略（温度/TopP/TopK）、Prompt工程、Function Calling、CoT思维链。</div>
-            <div class="blog-meta"><span>Anthony</span><span>·</span><span>技术笔记</span><span class="read-more">Read more →</span></div>
-          </div>
-        </a>
-
+  <!-- Hero -->
+  <div class="kb-container">
+    <div class="kb-hero">
+      <div class="kb-hero-label">// 技术笔记</div>
+      <h1 class="kb-hero-title">Agent开发工程师知识体系</h1>
+      <p class="kb-hero-desc">完整的Agent开发学习路线，从基础理论到业务落地</p>
+      <div class="kb-stats">
+        <div class="kb-stat"><div class="kb-stat-num">9</div><div class="kb-stat-label">章节</div></div>
+        <div class="kb-stat"><div class="kb-stat-num">19</div><div class="kb-stat-label">篇文章</div></div>
+        <div class="kb-stat"><div class="kb-stat-num">68K+</div><div class="kb-stat-label">字</div></div>
       </div>
     </div>
-  </section>
+
+    <div class="kb-actions">
+      <button class="kb-btn" onclick="expandAll()">展开全部 ▼</button>
+      <button class="kb-btn" onclick="collapseAll()">收起全部 ▲</button>
+    </div>
+
+    <!-- 第8章 -->
+    <div class="kb-chapter open">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH8</span>
+        <span class="kb-chapter-title">行业核心痛点与解决方案</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">1篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch8-pain-points-solutions.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">模型幻觉 · 上下文超限 · 工具误调用 · 执行不稳定——四大痛点的根因分析与解决方案</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第7章 -->
+    <div class="kb-chapter open">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH7</span>
+        <span class="kb-chapter-title">业务落地场景</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">1篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch7-scenarios.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">智能办公Agent · 研发工程Agent · 企业知识库Agent · 数据分析Agent</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第6章 -->
+    <div class="kb-chapter open">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH6</span>
+        <span class="kb-chapter-title">多Agent高阶系统</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">1篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch6-multi-agent.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">多Agent角色体系 · 中心化vs去中心化协作 · 通信协议与权限隔离</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第5章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH5</span>
+        <span class="kb-chapter-title">工程部署和性能优化</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">3篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch5-deployment-performance.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 性能优化方案 — 缓存优化 / 推理加速(vLLM/SGLang) / 上下文智能裁剪</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch5-deployment-monitoring.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 可观测监控体系 — 全链路日志埋点 / 核心指标统计 / 异常告警机制</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch5-deployment-architecture.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 服务部署架构 — FastAPI封装 / Docker容器化 / 高可用架构设计</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第4章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH4</span>
+        <span class="kb-chapter-title">增强技术栈（RAG / 微调 / 多模态）</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">3篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch4-enhanced-rag.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) RAG检索增强生成 — 文档预处理 / 双路召回(BM25+FAISS) / Rerank重排序</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch4-enhanced-finetune.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 模型微调定制 — SFT / LoRA轻量化微调 / DPO偏好对齐 / GGUF量化部署</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch4-enhanced-multimodal.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 多模态Agent — 视觉理解+OCR / ASR语音转文字 / TTS语音合成</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第3章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH3</span>
+        <span class="kb-chapter-title">主流开发框架</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">2篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch3-frameworks-lowcode.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 低代码/平台化框架 — Dify / FastGPT / Coze扣子 / FlowUs 选型指南</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch3-frameworks-code-level.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 代码级开源框架 — LangChain / LlamaIndex / AutoGen / CrewAI 深度对比</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第2章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH2</span>
+        <span class="kb-chapter-title">四大核心能力模块</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">4篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch2-module-memory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 记忆系统 Memory — 短时记忆 / 长时向量记忆 / 结构化实体记忆三层架构</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-planning.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 规划推理系统 Planning — CoT/ToT/GoT / Plan-and-Execute / AutoGPT / BabyAGI</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-tool-calling.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 工具调用系统 Tool Calling — JSON Schema规范 / 参数校验 / 编排与降级</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch2-module-reflection.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(4) 反思校验系统 Reflection — 结果自检 / 执行复盘 / 双Agent交叉校验</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第1章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH1</span>
+        <span class="kb-chapter-title">Agent核心理论架构</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">3篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch1-architecture-five-capabilities.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 五大核心原能力 — 自主规划 / 分层记忆 / 工具调用 / 反思纠错 / 环境感知</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch1-architecture-three-layer.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 三层经典架构 — 感知层 / 决策层 / 执行层 与 循环协作流程</span><span class="kb-article-arrow">→</span></a></li>
+          <li><a href="blog/ch1-architecture-paradigms.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 主流架构范式 — ReAct / CoT / ToT 单Agent范式 &amp; 多Agent协作模式</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第0章 -->
+    <div class="kb-chapter">
+      <div class="kb-chapter-header" onclick="toggleChapter(this)">
+        <span class="kb-chapter-num">CH0</span>
+        <span class="kb-chapter-title">前置知识基础</span>
+        <div class="kb-chapter-meta">
+          <span class="kb-chapter-count">1篇</span>
+          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="kb-chapter-body">
+        <ul class="kb-article-list">
+          <li><a href="blog/ch0-basics-llm-theory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">大模型基础理论 — Transformer自注意力 / Token机制 / 采样策略 / Prompt工程</span><span class="kb-article-arrow">→</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </main>
 
 <footer class="footer">
@@ -245,17 +441,18 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Fade-in animation on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  function toggleChapter(header) {
+    var chapter = header.parentElement;
+    chapter.classList.toggle('open');
+  }
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  function expandAll() {
+    document.querySelectorAll('.kb-chapter').forEach(function(el) { el.classList.add('open'); });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.kb-chapter').forEach(function(el) { el.classList.remove('open'); });
+  }
 </script>
 
 </body>
