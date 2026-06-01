@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3章 · 主流开发框架 — 代码级开源Agent开发框架 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第3章 · 主流开发框架 — 代码级开源Agent开发框架</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">LangChain（组件化生态最全）、LlamaIndex（长文本检索优势）、AutoGen微软多Agent协作）、CrewAI角色化流水线）深度对比。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>代码级框架概览</h2>
+<p>当你需要深度定制Agent行为时，代码级框架是唯一选择。</p>
+
+<h3>4.1 LangChain</h3>
+<p><strong>定位</strong>：组件化LLM应用开发框架，生态最全</p>
+
+<p><strong>核心模块</strong>：</p>
+<ul>
+<li><strong>Model I/O</strong>：统一模型接口（OpenAI、Anthropic、本地模型等）</li>
+<li><strong>Retrieval</strong>：RAG全流程（文档加载→切片→向量化→检索→生成）</li>
+<li><strong>Chains</strong>：链式调用组合（将多个步骤串联）</li>
+<li><strong>Agents</strong>：ReAct风格的Agent实现</li>
+<li><strong>Tools</strong>：丰富的内置工具库</li>
+<li><strong>Memory</strong>：多种记忆实现（缓冲、摘要、向量）</li>
+</ul>
+
+<p><strong>优势</strong>：社区最大、集成最多、文档完善</p>
+<p><strong>劣势</strong>：抽象层较厚、调试困难、版本迭代快导致API不稳定</p>
+<p><strong>适用场景</strong>：快速原型、需要对接多种模型和工具的项目</p>
+
+<h3>4.2 LlamaIndex</h3>
+<p><strong>定位</strong>：专注于数据连接的LLM框架，长文本检索增强首选</p>
+
+<p><strong>核心能力</strong>：</p>
+<ul>
+<li><strong>数据连接器</strong>：支持PDF、Markdown、数据库、Notion、网页等100+数据源</li>
+<li><strong>高级索引</strong>：向量索引、关键词索引、树形索引、知识图谱索引</li>
+<li><strong>智能检索</strong>：混合检索、路由检索、条件检索</li>
+<li><strong>后处理</strong>：重排序、上下文压缩、引用标注</li>
+</ul>
+
+<p><strong>优势</strong>：RAG领域最强、索引策略丰富、性能优秀</p>
+<p><strong>劣势</strong>：主要聚焦RAG，通用Agent能力不如LangChain</p>
+<p><strong>适用场景</strong>：私有知识库、文档问答、企业搜索引擎</p>
+
+<h3>4.3 AutoGen（微软）</h3>
+<p><strong>定位</strong>：多Agent对话协作框架</p>
+
+<p><strong>核心能力</strong>：</p>
+<ul>
+<li><strong>多Agent对话</strong>：Agent之间通过自然语言对话协作</li>
+<li><strong>群组仿真</strong>：模拟多人讨论的场景</li>
+<li><strong>自主沟通</strong>：Agent自行决定和谁说话、说什么</li>
+<li><strong>人机协作</strong>：人类可以随时介入对话</li>
+</ul>
+
+<p><strong>优势</strong>：微软背书、多Agent场景原生支持、学术研究丰富</p>
+<p><strong>劣势</strong>：学习曲线陡峭、单Agent场景偏重</p>
+<p><strong>适用场景</strong>：多角色协作、模拟讨论、复杂决策</p>
+
+<h3>4.4 CrewAI</h3>
+<p><strong>定位</strong>：角色化多Agent流水线框架</p>
+
+<p><strong>核心能力</strong>：</p>
+<ul>
+<li><strong>角色定义</strong>：为每个Agent定义角色、目标、背景故事</li>
+<li><strong>任务分配</strong>：将复杂任务拆解并分配给不同角色的Agent</li>
+<li><strong>流程自动化</strong>：顺序执行、并行执行、条件分支</li>
+<li><strong>工具授权</strong>：细粒度控制每个Agent可以使用哪些工具</li>
+</ul>
+
+<p><strong>优势</strong>：直观的角色扮演模式、上手相对简单</p>
+<p><strong>劣势</strong>：生态较小、复杂场景灵活性有限</p>
+<p><strong>适用场景</strong>：内容创作流水线、代码审查、自动化报告</p>
+
+<h3>4.5 其他值得关注的框架</h3>
+<ul>
+<li><strong>Haystack</strong>：deepset出品，搜索增强型NLP框架</li>
+<li><strong>OpenAI Agents SDK</strong>：OpenAI官方Agent框架，Swarm模式</li>
+<li><strong>Camel</strong>：多角色角色扮演框架</li>
+</ul>
+
+<h2>框架选型决策树</h2>
+<ol>
+<li>需要RAG/知识库？ → <strong>LlamaIndex</strong></li>
+<li>需要多Agent协作？ → <strong>CrewAI 或 AutoGen</strong></li>
+<li>需要快速原型/多模型切换？ → <strong>LangChain</strong></li>
+<li>不想写代码？ → <strong>Dify / Coze</strong></li>
+<li>需要极致性能/完全掌控？ → <strong>直接调用LLM API</strong></li>
+</ol>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第3章最后一节，下一章：增强技术栈（RAG/微调/多模态）。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch3-frameworks-lowcode.html">&larr; 上一篇：低代码/平台化Agent开发框架</a><a href="ch4-enhanced-rag.html">下一篇：RAG检索增强生成 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
