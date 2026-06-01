@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第0章 · 前置知识基础 — 大模型基础理论 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第0章 · 前置知识基础 — 大模型基础理论</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">Transformer核心原理、Token机制与上下文窗口限制、采样策略（温度/TopP/TopK）、Prompt工程、Function Calling、CoT思维链等Agent开发必备基础理论。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>为什么需要理解大模型基础？</h2>
+<p>Agent的所有能力——上下文理解、工具调用、规划推理、多轮对话，都建立在大模型的底层理论之上。不理解这些基础，就无法明白：</p>
+<ul>
+<li>为什么模型会"忘事"？</li>
+<li>为什么长对话会溢出？</li>
+<li>为什么工具调用会格式错误？</li>
+<li>为什么需要Prompt工程和RAG？</li>
+</ul>
+
+<h2>1. Transformer核心原理：LLM的"大脑架构"</h2>
+<p>Transformer是当前所有主流大模型（GPT系列、Llama系列、通义千问等）的底层架构，2017年由Google提出，核心设计是<strong>自注意力机制（Self-Attention）</strong>。</p>
+
+<h3>1.1 自注意力机制（Self-Attention）</h3>
+<ul>
+<li>核⼼作⽤：计算序列中每个词对其他词的"注意⼒权重"，让模型能同时处理序列中的所有词，并学习词与词之间的关联关系</li>
+<li>计算逻辑：
+<ol>
+<li>为每个词⽣成Query（查询）、Key（键）、Value（值）向量</li>
+<li>通过Query和Key的相似度，计算注意⼒分数</li>
+<li>对分数做Softmax归⼀化，得到权重</li>
+<li>⽤权重加权Value向量，得到每个词的注意⼒输出</li>
+</ol>
+</li>
+</ul>
+
+<h3>1.2 多头注意力（Multi-Head Attention）</h3>
+<p>并⾏计算多组注意⼒，让模型同时捕捉不同维度的关联（如语法关系、语义关系），提升理解能⼒。</p>
+
+<h3>1.3 位置编码（Positional Encoding）</h3>
+<p>Transformer本身不包含序列顺序信息，位置编码为每个词注⼊位置信息，让模型理解词的先后顺序。</p>
+
+<h3>1.4 前馈网络（FFN）与层归一化</h3>
+<p>每个Transformer层的后半部分，通过前馈⽹络对注意⼒输出做⾮线性变换，层归一化则保证训练稳定。</p>
+
+<h3>对Agent开发的核⼼影响</h3>
+<ol>
+<li>上下⽂理解能⼒的来源：⾃注意⼒机制让模型能理解对话上下⽂、⽂档⻓⽂本</li>
+<li>⻓上下⽂的瓶颈：⾃注意⼒的计算复杂度是O(n²)，催⽣了RAG检索增强、上下⽂压缩等技术</li>
+<li>⻓⽂本优化的必要性：为了突破⻓上下⽂瓶颈，Agent开发中才需要RAG、上下⽂压缩、滑动窗⼝等技术</li>
+</ol>
+
+<h2>2. Token机制：Agent"记忆"的物理边界</h2>
+
+<h3>2.1 Token是什么？</h3>
+<p>Token是⼤模型处理⽂本的基本单位，相当于模型的"词汇"。模型无法直接理解自然语⾔，必须先将⽂本拆分为Token序列。</p>
+
+<h3>2.2 分词方式</h3>
+<p>主流采⽤BPE（字节对编码），会把高频词作为单个Token，低频词拆分为子词/字符Token。例如：</p>
+<ul>
+<li>"Agent"是1个Token</li>
+<li>生僻词或中⽂单字通常是1~2个Token</li>
+</ul>
+
+<h3>2.3 Token换算规则</h3>
+<ul>
+<li>中⽂场景：1个Token ≈ 1~2个汉字</li>
+<li>英⽂场景：1个Token ≈ 0.7~1个单词</li>
+</ul>
+
+<h3>2.4 对Agent开发的影响</h3>
+<ul>
+<li>对话⻓度、⽂档⼤小都要换算为Token，避免超出模型限制</li>
+<li>⻓对话中每轮都消耗Token，需要做上下⽂压缩减少无效Token占⽤</li>
+<li>⼯具调⽤的指令、思考过程都会消耗Token，需精简Prompt、优化⼯具描述</li>
+</ul>
+
+<h2>3. 上下文窗口限制：模型的"短期记忆上限"</h2>
+
+<h3>3.1 什么是上下文窗口？</h3>
+<p>上下文窗口（Context Window）是模型能同时处理的最⼤Token序列长度，例如4K/8K/32K/128K，包括用户输入、历史对话、模型输出的所有Token。</p>
+
+<h3>3.2 限制的根本原因</h3>
+<ul>
+<li>⾃注意⼒机制的O(n²)复杂度，序列越⻓计算和显存成本越⾼</li>
+<li>模型训练时的最⼤序列长度决定了其原⽣上下⽂窗口</li>
+</ul>
+
+<h3>3.3 对Agent开发的影响</h3>
+<ul>
+<li><strong>催⽣分层记忆体系</strong>：模型只有⼀个上下⽂窗口，无法长期存储信息，因此Agent需要短时记忆、⻓时向量记忆、实体记忆三层架构</li>
+<li><strong>必须做上下文管理</strong>：滑动窗口截断、摘要压缩、关键信息提取</li>
+<li><strong>RAG成为标配</strong>：⻓⽂档、私有知识无法全部放入窗口，必须通过RAG检索增强</li>
+<li><strong>⻓对话处理的痛点</strong>：历史对话持续消耗Token，后续可用窗口越来越小</li>
+</ul>
+
+<h2>4. 采样策略：控制Agent的"输出风格"</h2>
+<p>采样策略决定了模型生成Token时的概率分布选择方式，直接影响输出的稳定性、随机性和多样性。</p>
+
+<h3>4.1 温度（Temperature）</h3>
+<p>控制模型输出的"随机性/确定性"，本质是对概率分布进行缩放：</p>
+<table>
+<tr><th>温度值</th><th>效果</th></tr>
+<tr><td>T &lt; 1</td><td>概率分布变尖锐，输出更保守、稳定、重复</td></tr>
+<tr><td>T = 1</td><td>默认值，输出风格平衡</td></tr>
+<tr><td>T &gt; 1</td><td>概率分布变平缓，输出更有创意、随机、发散</td></tr>
+</table>
+
+<h3>4.2 TopK采样</h3>
+<p>每次生成Token时，只从概率最高的K个候选词中选择，过滤掉低概率词。</p>
+
+<h3>4.3 TopP（Nucleus Sampling）采样</h3>
+<p>从概率累计和达到P（如0.9）的词中选择，动态调整候选池大小，比TopK更灵活。</p>
+
+<h3>4.4 Agent开发中的采样策略推荐</h3>
+<table>
+<tr><th>场景</th><th>推荐参数</th><th>效果</th></tr>
+<tr><td>工具调用、JSON输出</td><td>T=0.1~0.3, TopP=0.1~0.5</td><td>输出稳定，格式错误率极低</td></tr>
+<tr><td>事实问答、客服助手</td><td>T=0.3~0.7, TopP=0.7~0.9</td><td>答案准确，风格自然</td></tr>
+<tr><td>创意写作、头脑风暴</td><td>T=0.7~1.0, TopP=0.9~1.0</td><td>输出多样，富有创意</td></tr>
+</table>
+
+<h2>5. 基础概念（Agent开发高频必懂）</h2>
+
+<h3>5.1 Prompt工程</h3>
+<p>通过设计、优化输⼊文本，引导模型按预期格式、风格、逻辑输出结果的技术，是Agent开发中成本最低、效果最直接的优化手段。</p>
+<ul>
+<li><strong>角色定义</strong>：System Prompt定义Agent身份、职责、行为边界</li>
+<li><strong>格式约束</strong>：强制按JSON/Markdown格式输出</li>
+<li><strong>Few-shot示例</strong>：提供示例引导模型模仿格式和逻辑</li>
+<li><strong>思维链引导</strong>："Let's think step by step"触发分步推理</li>
+<li><strong>边界约束</strong>：明确模型不能做什么，减少幻觉</li>
+</ul>
+
+<h3>5.2 上下文记忆</h3>
+<p>模型本身没有"记忆"能力，所有对话依赖上下文窗口中的历史对话序列。Agent需要设计分层记忆体系来突破这个限制。</p>
+
+<h3>5.3 模型幻觉</h3>
+<p>模型生成看似合理但与事实不符的内容，是大模型的固有缺陷。Agent必须配套RAG检索增强、事实校验、反思系统来应对。</p>
+
+<h3>5.4 上下文压缩</h3>
+<p>通过摘要、过滤、提取关键信息等方式减少Token数量：</p>
+<ul>
+<li>滑动窗口截断：保留最新对话</li>
+<li>摘要压缩：用LLM总结历史对话</li>
+<li>关键信息提取：只保留有效信息</li>
+</ul>
+
+<h3>5.5 Function Calling</h3>
+<p>模型通过标准化格式调用外部工具/函数的能力，让模型突破自身知识和能力边界。两种实现方式：</p>
+<ul>
+<li><strong>原生Function Calling</strong>：商用模型专项训练，稳定性高</li>
+<li><strong>Prompt模拟调用</strong>：开源模型通过Prompt约束，需额外格式校验</li>
+</ul>
+
+<h3>5.6 Few-shot / CoT</h3>
+<ul>
+<li><strong>Few-shot（少样本学习）</strong>：提供少量示例引导模型模仿格式和逻辑</li>
+<li><strong>CoT（Chain-of-Thought 思维链）</strong>：引导模型分步思考，提升复杂任务推理能力</li>
+</ul>
+
+<hr>
+<p><em>本文为《Agent开发工程师知识体系》第0章，下一章：Agent核心理论架构。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch1-architecture-five-capabilities.html">下一篇：五大核心原能力 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
