@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5章 · 工程部署和性能优化 — 服务部署架构 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第5章 · 工程部署和性能优化 — 服务部署架构</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">FastAPI Agent服务封装、Docker容器化部署、私有化部署与Serverless部署、高可用架构（队列/限流/熔断/重试）。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>8.1 FastAPI Agent服务封装</h2>
+<p>将Agent包装为标准的HTTP API服务。</p>
+
+<h3>基本架构</h3>
+<pre><code>from fastapi import FastAPI, Request
+from fastapi.responses import StreamingResponse
+import json
+
+app = FastAPI(title="Agent API")
+
+@app.post("/chat")
+async def chat(request: Request):
+    body = await request.json()
+    message = body["message"]
+    
+    # 流式输出（推荐）
+    async def generate():
+        async for chunk in agent.stream_chat(message):
+            yield f"data: {json.dumps(chunk)}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.post("/chat/completions")
+async def completions(request: Request):
+    # 兼容 OpenAI API 格式
+    ...
+</code></pre>
+
+<h3>关键设计点</h3>
+<ul>
+<li><strong>流式输出</strong>：用SSE（Server-Sent Events）实现逐token输出</li>
+<li><strong>兼容OpenAI格式</strong>：可以直接替换为OpenAI SDK的base_url</li>
+<li><strong>异步处理</strong>：FastAPI原生async，配合异步Agent框架</li>
+<li><strong>请求校验</strong>：Pydantic模型做输入验证</li>
+</ul>
+
+<h2>8.2 Docker容器化部署</h2>
+
+<h3>Dockerfile最佳实践</h3>
+<pre><code># 多阶段构建，减小镜像体积
+FROM python:3.11-slim as builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+FROM python:3.11-slim
+WORKDIR /app
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+</code></pre>
+
+<h3>docker-compose.yml</h3>
+<pre><code>version: '3.8'
+services:
+  agent-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+      - qdrant
+  
+  redis:
+    image: redis:7-alpine
+    
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+</code></pre>
+
+<h2>8.3 私有化部署 vs Serverless</h2>
+
+<table>
+<tr><th>维度</th><th>私有化部署</th><th>Serverless</th></tr>
+<tr><td>成本</td><td>固定服务器成本</td><td>按调用付费</td></tr>
+<tr><td>延迟</td><td>低（无冷启动）</td><td>可能有冷启动</td></tr>
+<tr><td>数据安全</td><td>完全可控</td><td>依赖云厂商</td></tr>
+<tr><td>运维</td><td>需要运维</td><td>免运维</td></tr>
+<tr><td>扩展性</td><td>手动扩缩容</td><td>自动扩缩容</td></tr>
+</table>
+
+<h2>8.4 高可用架构</h2>
+
+<h3>8.4.1 队列</h3>
+<ul>
+<li>用消息队列（Redis Stream / RabbitMQ / Kafka）削峰填谷</li>
+<li>高峰期请求排队，避免压垮后端</li>
+<li>支持异步处理长时间任务</li>
+</ul>
+
+<h3>8.4.2 限流</h3>
+<ul>
+<li><strong>用户级限流</strong>：每个用户每分钟最多N次请求</li>
+<li><strong>全局限流</strong>：整个服务每秒最多处理M个请求</li>
+<li><strong>Token级限流</strong>：防止单个用户消耗过多资源</li>
+<li>工具：Redis + 令牌桶/滑动窗口算法</li>
+</ul>
+
+<h3>8.4.3 熔断</h3>
+<ul>
+<li>当下游服务（LLM API、向量库）故障率达到阈值时自动熔断</li>
+<li>熔断期间返回降级响应（如"服务繁忙，请稍后重试"）</li>
+<li>定期探测下游是否恢复，自动关闭熔断</li>
+</ul>
+
+<h3>8.4.4 重试</h3>
+<ul>
+<li><strong>指数退避重试</strong>：1s → 2s → 4s → 8s，最多3次</li>
+<li><strong>仅对幂等操作重试</strong>：GET、PUT可以重试，POST要看情况</li>
+<li><strong>区分可重试和不可重试错误</strong>：429 Too Many Requests 可重试，400 Bad Request 不重试</li>
+</ul>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第5章最后一节，下一章：多Agent高阶系统。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch5-deployment-monitoring.html">&larr; 上一篇：可观测监控体系</a><a href="ch6-multi-agent.html">下一篇：第6章 · 多Agent高阶系统 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
