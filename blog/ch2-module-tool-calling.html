@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2章 · 四大核心能力模块 — 工具调用系统 Tool Calling - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第2章 · 四大核心能力模块 — 工具调用系统 Tool Calling</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">JSON Schema规范定义、参数校验、通用内置工具、自定义业务工具、多工具串行/并行编排与异常降级。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>为什么需要工具调用？</h2>
+<p>大模型的知识截止于训练时间，无法访问实时信息、无法执行操作。Tool Calling 让Agent突破这些限制：</p>
+<ul>
+<li>查询实时数据（天气、股价、新闻）</li>
+<li>操作外部系统（数据库、API、文件系统）</li>
+<li>执行计算（数学运算、数据分析）</li>
+<li>与人交互（发邮件、通知、消息推送）</li>
+</ul>
+
+<h2>4.1 函数调用基础</h2>
+
+<h3>4.1.1 JSON Schema规范定义</h3>
+<p>每个工具必须用JSON Schema描述接口：</p>
+<pre><code>{
+  "name": "get_weather",
+  "description": "获取指定城市的当前天气",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "城市名称"
+      },
+      "unit": {
+        "type": "string",
+        "enum": ["celsius", "fahrenheit"],
+        "description": "温度单位"
+      }
+    },
+    "required": ["city"]
+  }
+}
+</code></pre>
+
+<h3>4.1.2 参数校验与类型约束</h3>
+<ul>
+<li>必需参数缺失 → 提示用户补充</li>
+<li>类型不匹配 → 尝试转换或报错</li>
+<li>枚举值非法 → 提示合法选项</li>
+<li>格式错误（如日期） → 尝试解析或要求重填</li>
+</ul>
+
+<h3>4.1.3 调用格式纠错重试</h3>
+<p>模型生成的工具调用经常出现格式错误，需要容错机制：</p>
+<ol>
+<li>尝试解析JSON → 失败则提示模型重新生成</li>
+<li>参数类型不对 → 尝试自动转换</li>
+<li>工具名不存在 → 返回可用工具列表让模型重选</li>
+<li>连续失败超过阈值 → 降级为纯文本回复</li>
+</ol>
+
+<h2>4.2 通用内置工具</h2>
+<p>大多数Agent都应该配备的基础工具集：</p>
+
+<table>
+<tr><th>工具</th><th>功能</th><th>用途</th></tr>
+<tr><td>代码解释器</td><td>执行Python/JS代码</td><td>数学计算、数据处理</td></tr>
+<tr><td>文件读写</td><td>读写本地文件</td><td>配置管理、日志记录</td></tr>
+<tr><td>数据库查询</td><td>SQL查询</td><td>业务数据获取</td></tr>
+<tr><td>网络搜索</td><td>搜索引擎API</td><td>实时信息获取</td></tr>
+<tr><td>计算器</td><td>精确数值计算</td><td>避免模型算术错误</td></tr>
+<tr><td>时间工具</td><td>获取当前时间</td><td>定时任务、时间相关推理</td></tr>
+</table>
+
+<h2>4.3 自定义业务工具</h2>
+<p>根据实际业务需求开发的专用工具：</p>
+<ul>
+<li><strong>第三方API对接</strong>：微信API、钉钉API、企业内部系统</li>
+<li><strong>企业内部系统插件</strong>：CRM、ERP、OA系统的接口封装</li>
+<li><strong>爬虫工具</strong>：抓取特定网站的数据</li>
+<li><strong>消息推送</strong>：邮件、短信、IM通知</li>
+<li><strong>办公工具</strong>：日历操作、文档编辑、会议安排</li>
+</ul>
+
+<h2>4.4 工具编排</h2>
+<p>当任务需要调用多个工具时，编排策略至关重要：</p>
+
+<h3>4.4.1 串行调度</h3>
+<p>工具B的输入依赖工具A的输出，必须顺序执行：</p>
+<pre><code>1. search_web(query="最新Java版本") → url_list
+2. fetch_page(url=url_list[0]) → page_content
+3. summarize(text=page_content) → summary
+</code></pre>
+
+<h3>4.4.2 并行调度</h3>
+<p>多个工具之间无依赖关系，可以并行执行以节省时间：</p>
+<pre><code>并行执行:
+├─ get_weather(city="北京")
+├─ get_stock_price(symbol="AAPL")
+├─ check_calendar(user="anthony")
+└─ query_database("SELECT * FROM tasks")
+</code></pre>
+
+<h3>4.4.3 结果聚合</h3>
+<p>多个工具的结果需要合并后才能给出最终答案：</p>
+<ul>
+<li>去重：多个来源可能有重复信息</li>
+<li>排序：按相关性或时间排序</li>
+<li>综合：将多个片段综合成连贯的回答</li>
+</ul>
+
+<h3>4.4.4 异常降级</h3>
+<p>某个工具调用失败时的应对策略：</p>
+<ul>
+<li><strong>重试</strong>：瞬时错误可以重试1-3次</li>
+<li><strong>替换</strong>：用备用工具完成相同功能</li>
+<li><strong>跳过</strong>：非关键工具失败可以跳过，用已有信息继续</li>
+<li><strong>兜底</strong>：所有工具都失败时，给出友好的错误提示</li>
+</ul>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第2章第3节，下一节：反思校验系统 Reflection。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch2-module-planning.html">&larr; 上一篇：规划推理系统 Planning</a><a href="ch2-module-reflection.html">下一篇：反思校验系统 Reflection &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
