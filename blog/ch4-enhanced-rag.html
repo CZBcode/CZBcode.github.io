@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第4章 · 增强技术栈 — RAG检索增强生成 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第4章 · 增强技术栈 — RAG检索增强生成</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">文档预处理（PDF/MD/Word解析+智能分块）、双路召回（BM25稀疏+FAISS稠密混合）、Rerank重排序、上下文压缩与防幻觉。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>什么是RAG？</h2>
+<p>RAG（Retrieval-Augmented Generation，检索增强生成）的核心思想很简单：</p>
+<blockquote>不把所有知识塞进模型里，而是在需要的时候去"查阅资料"，然后把查到的内容交给模型生成答案。</blockquote>
+<p>这解决了大模型的三个根本问题：知识过期、知识不可控、知识成本高。</p>
+
+<h2>5.1 文档预处理</h2>
+<p>RAG的第一步是把各种格式的文档变成模型可以理解的文本。</p>
+
+<h3>5.1.1 文档解析</h3>
+<table>
+<tr><th>格式</th><th>推荐工具</th><th>注意事项</th></tr>
+<tr><td>PDF</td><td>PyPDF2, pdfplumber, Unstructured</td><td>扫描件需要OCR</td></tr>
+<tr><td>Markdown</td><td>直接读取</td><td>保留标题层级结构</td></tr>
+<tr><td>Word</td><td>python-docx</td><td>注意样式和表格</td></tr>
+<tr><td>HTML</td><td>BeautifulSoup, trafilatura</td><td>去除导航和广告</td></tr>
+<tr><td>Notion</td><td>Unstructured, Notion API</td><td>保留块结构</td></tr>
+</table>
+
+<h3>5.1.2 智能分块策略</h3>
+<p>分块质量直接决定RAG的效果。常用策略：</p>
+<ul>
+<li><strong>固定长度分割</strong>：按字符数/Token数切分，简单但可能切断语义</li>
+<li><strong>递归字符分割</strong>：按段落→句子→单词递归切分，保留层次结构</li>
+<li><strong>语义分块</strong>：用embedding模型判断语义边界再切分，效果最好</li>
+<li><strong>重叠窗口</strong>：相邻chunk之间保留重叠部分，避免信息丢失</li>
+</ul>
+
+<pre><code># 推荐的分块配置
+chunk_config = {
+    "chunk_size": 500,       // 每块约500字符
+    "chunk_overlap": 50,     // 重叠50字符
+    "separators": ["\n\n", "\n", "。", " ", ""]
+    // 优先在段落、句子处切分
+}
+</code></pre>
+
+<h2>5.2 双路召回</h2>
+<p>单一检索方式各有缺陷，双路召回结合两者优势：</p>
+
+<h3>5.2.1 BM25稀疏检索</h3>
+<ul>
+<li>基于关键词匹配的传统检索算法</li>
+<li>优点：精确匹配能力强，对专有名词效果好</li>
+<li>缺点：无法理解同义词和语义</li>
+<li>工具：Elasticsearch、BM25Okapi、Rank-BM25</li>
+</ul>
+
+<h3>5.2.2 向量稠密检索</h3>
+<ul>
+<li>将query和文档都转为向量，计算余弦相似度</li>
+<li>优点：能理解语义和同义词</li>
+<li>缺点：对精确关键词匹配不如BM25</li>
+<li>工具：FAISS、Chroma、Milvus</li>
+</ul>
+
+<h3>5.2.3 混合召回融合</h3>
+<p>结合两种检索结果，常用的融合算法：</p>
+<ul>
+<li><strong>RRF（Reciprocal Rank Fusion）</strong>：按排名倒数求和，简单有效</li>
+<li><strong>加权评分</strong>：给两个分数加权和</li>
+<li><strong>RRF + Rerank</strong>：先用RRF粗排，再用交叉编码器精排</li>
+</ul>
+
+<h2>5.3 后置优化</h2>
+
+<h3>5.3.1 Rerank重排序</h3>
+<p>对初步召回的结果重新打分排序：</p>
+<ul>
+<li><strong>交叉编码器（Cross-Encoder）</strong>：同时输入query和document，精度更高但速度较慢</li>
+<li><strong>推荐模型</strong>：bge-reranker、Cohere Rerank、jina-reranker</li>
+<li>通常只对Top-K（如Top-20）做Rerank，平衡效果和速度</li>
+</ul>
+
+<h3>5.3.2 上下文压缩</h3>
+<p>召回的文档可能很长，需要压缩后再放入上下文窗口：</p>
+<ul>
+<li>只保留与问题最相关的段落</li>
+<li>去除冗余和重复内容</li>
+<li>用LLM提炼关键信息</li>
+</ul>
+
+<h3>5.3.3 答案溯源</h3>
+<p>在答案中标注信息来源，一举三得：</p>
+<ul>
+<li><strong>防幻觉</strong>：强制模型基于给定内容回答</li>
+<li><strong>可信度</strong>：用户可以点击查看原文</li>
+<li><strong>可追溯</strong>：出问题时可以定位到具体文档</li>
+</ul>
+
+<h2>RAG效果评估指标</h2>
+<table>
+<tr><th>指标</th><th>含义</th><th>目标值</th></tr>
+<tr><td>Precision@K</td><td>前K个结果中有多少是相关的</td><td>&gt; 0.8</td></tr>
+<tr><td>Recall@K</td><td>相关结果中有多少被召回了</td><td>&gt; 0.9</td></tr>
+<tr><td>MRR</td><td>第一个相关结果的排名倒数</td><td>&gt; 0.7</td></tr>
+<tr><td>Faithfulness</td><td>答案是否基于检索内容</td><td>&gt; 0.95</td></tr>
+</table>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第4章第1节，下一节：模型微调定制。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch3-frameworks-code-level.html">&larr; 上一篇：代码级开源Agent开发框架</a><a href="ch4-enhanced-finetune.html">下一篇：模型微调定制 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
