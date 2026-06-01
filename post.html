@@ -9,8 +9,8 @@
   <!-- marked.js: Markdown 解析器 -->
   <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
   <!-- highlight.js: 代码高亮 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github-dark.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <style>
     /* ===== 文章页面专属样式 ===== */
     .post-wrapper {
@@ -353,9 +353,11 @@ function renderPost(meta, mdText, allPosts, slug) {
   document.getElementById('post-body').innerHTML = marked.parse(body);
 
   // 代码块高亮
-  document.querySelectorAll('pre code').forEach(el => {
-    hljs.highlightElement(el);
-  });
+  if (typeof hljs !== 'undefined') {
+    document.querySelectorAll('pre code').forEach(el => {
+      hljs.highlightElement(el);
+    });
+  }
 
   // 下一篇导航
   const nextNav = document.getElementById('post-nav-next');
