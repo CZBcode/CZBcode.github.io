@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5章 · 工程部署和性能优化 — 可观测监控体系 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第5章 · 工程部署和性能优化 — 可观测监控体系</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">全链路日志埋点（规划步骤/工具调用/LLM请求）、核心指标统计（Token消耗/响应耗时/成功率/幻觉率）、异常告警机制。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>为什么Agent需要可观测性？</h2>
+<p>传统应用的日志只能看到"输入→输出"，而Agent的执行过程是<strong>多步骤、多分支、非确定性</strong>的。没有完善的可观测性，你将面临：</p>
+<ul>
+<li>出了问题不知道哪一步出的</li>
+<li>不知道Token花在哪了</li>
+<li>无法评估Agent的实际表现</li>
+<li>用户投诉时无法复现</li>
+</ul>
+
+<h2>7.1 全链路日志埋点</h2>
+
+<h3>7.1.1 规划步骤日志</h3>
+<p>记录Agent的每一次"思考"：</p>
+<pre><code>{
+  "trace_id": "abc123",
+  "step_type": "planning",
+  "timestamp": "2026-06-01T16:00:00Z",
+  "input": "帮我分析这份财报",
+  "thought": "用户需要财务分析，我应该：1.读取文件 2.提取关键指标 3.生成分析报告",
+  "plan": ["read_file", "extract_metrics", "generate_report"],
+  "tokens_used": 250,
+  "latency_ms": 1200
+}
+</code></pre>
+
+<h3>7.1.2 工具调用日志</h3>
+<p>记录每一次工具调用的详细信息：</p>
+<pre><code>{
+  "trace_id": "abc123",
+  "step_type": "tool_call",
+  "tool_name": "search_database",
+  "input": {"query": "Q1 revenue"},
+  "output": {"results": [...], "count": 15},
+  "success": true,
+  "latency_ms": 350,
+  "tokens_used": 0
+}
+</code></pre>
+
+<h3>7.1.3 LLM请求响应日志</h3>
+<p>记录每次与大模型的交互：</p>
+<pre><code>{
+  "trace_id": "abc123",
+  "step_type": "llm_call",
+  "model": "gpt-4o",
+  "prompt_tokens": 1500,
+  "completion_tokens": 300,
+  "total_tokens": 1800,
+  "latency_ms": 3200,
+  "finish_reason": "stop",
+  "response_preview": "根据财报数据..."
+}
+</code></pre>
+
+<h2>7.2 核心指标统计</h2>
+
+<h3>7.2.1 Token消耗</h3>
+<ul>
+<li><strong>总Token消耗</strong>：每日/每月的总量和趋势</li>
+<li><strong>单次平均Token</strong>：每个请求的平均消耗</li>
+<li><strong>Token分布</strong>：Prompt vs Completion 的比例</li>
+<li><strong>成本追踪</strong>：换算为美元/人民币的费用</li>
+</ul>
+
+<h3>7.2.2 响应耗时</h3>
+<ul>
+<li><strong>P50/P95/P99延迟</strong>：不同百分位的响应时间</li>
+<li><strong>耗时分解</strong>：LLM推理 vs 工具调用 vs 其他</li>
+<li><strong>慢请求分析</strong>：找出最慢的请求及其瓶颈</li>
+</ul>
+
+<h3>7.2.3 任务成功率</h3>
+<ul>
+<li><strong>端到端成功率</strong>：用户请求最终得到满意答复的比例</li>
+<li><strong>步骤级成功率</strong>：每一步操作的独立成功率</li>
+<li><strong>失败分类</strong>：按失败原因归类统计</li>
+</ul>
+
+<h3>7.2.4 幻觉率</h3>
+<ul>
+<li>这是Agent特有的指标——模型编造信息的比例</li>
+<li>需要人工抽样或自动校验来测量</li>
+<li>目标：控制在5%以下</li>
+</ul>
+
+<h3>7.2.5 工具调用错误率</h3>
+<ul>
+<li>每种工具的成功/失败率</li>
+<li>常见错误类型分布</li>
+<li>超时率和重试率</li>
+</ul>
+
+<h2>7.3 异常告警机制</h2>
+
+<h3>告警规则示例</h3>
+<table>
+<tr><th>指标</th><th>条件</th><th>严重级别</th><th>通知方式</th></tr>
+<tr><td>错误率</td><td>&gt; 5% (5min)</td><td>🔴 P0</td><td>短信+电话</td></tr>
+<tr><td>P99延迟</td><td>&gt; 30s (5min)</td><td>🟠 P1</td><td>IM+邮件</td></tr>
+<tr><td>Token消耗</td><td>&gt; 预算 80% (日)</td><td>🟡 P2</td><td>邮件</td></tr>
+<tr><td>幻觉率</td><td>&gt; 10% (1h)</td><td>🟠 P1</td><td>IM+邮件</td></tr>
+</table>
+
+<h3>推荐的可观测性工具</h3>
+<ul>
+<li><strong>LangSmith</strong>：LangChain官方 tracing平台</li>
+<li><strong>Arize Phoenix</strong>：开源LLM可观测性平台</li>
+<li><strong>LangFuse</strong>：开源，支持多框架</li>
+<li><strong>OpenTelemetry</strong>：标准化的遥测协议，可对接任何后端</li>
+</ul>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第5章第2节，下一节：服务部署架构。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch5-deployment-performance.html">&larr; 上一篇：性能优化方案</a><a href="ch5-deployment-architecture.html">下一篇：服务部署架构 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
