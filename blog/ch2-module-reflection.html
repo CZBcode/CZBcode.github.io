@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2章 · 四大核心能力模块 — 反思校验系统 Reflection - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第2章 · 四大核心能力模块 — 反思校验系统 Reflection</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">结果自检（事实/格式/逻辑校验）、执行复盘（失败分类/Prompt迭代/错误规避）、高阶互评（双Agent交叉校验）。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>为什么需要反思校验？</h2>
+<p>大模型本质上是概率生成引擎，输出可能存在以下问题：</p>
+<ul>
+<li>事实错误（幻觉）</li>
+<li>格式不符合要求</li>
+<li>逻辑不自洽</li>
+<li>遗漏用户的要求</li>
+</ul>
+<p>反思校验系统就是Agent的"质检部门"，确保输出质量。</p>
+
+<h2>5.1 结果自检</h2>
+<p>在返回给用户之前，对输出进行多层校验：</p>
+
+<h3>5.1.1 事实真实性校验</h3>
+<ul>
+<li>关键事实声明是否可以通过知识库验证？</li>
+<li>数字、日期、名称是否准确？</li>
+<li>引用来源是否可靠？</li>
+<li>是否使用了RAG溯源来支撑论断？</li>
+</ul>
+
+<h3>5.1.2 格式合规性校验</h3>
+<ul>
+<li>JSON输出是否符合Schema？</li>
+<li>代码是否能通过编译/运行？</li>
+<li>SQL语句语法是否正确？</li>
+<li>API调用的参数是否完整？</li>
+</ul>
+
+<h3>5.1.3 逻辑闭环校验</h3>
+<ul>
+<li>结论是否由前提合理推导出来？</li>
+<li>是否存在前后矛盾？</li>
+<li>是否回答了用户的所有问题？</li>
+<li>推理链条是否完整？</li>
+</ul>
+
+<h2>5.2 执行复盘</h2>
+<p>每次任务执行后的经验沉淀，让Agent越来越聪明：</p>
+
+<h3>5.2.1 失败原因分类总结</h3>
+<ul>
+<li>工具调用失败 → 是权限问题还是参数错误？</li>
+<li>规划不合理 → 是否低估了任务复杂度？</li>
+<li>理解偏差 → 是否误解了用户意图？</li>
+<li>知识不足 → 是否需要补充RAG知识？</li>
+</ul>
+
+<h3>5.2.2 Prompt迭代优化</h3>
+<ul>
+<li>记录哪些类型的任务容易出错</li>
+<li>针对性优化对应的System Prompt</li>
+<li>添加更多Few-shot示例</li>
+<li>强化边界约束条件</li>
+</ul>
+
+<h3>5.2.3 错误规避策略沉淀</h3>
+<pre><code>// 错误模式库示例
+error_patterns = [
+  {
+    pattern: "SQL注入风险",
+    trigger: "拼接用户输入到SQL",
+    solution: "始终使用参数化查询",
+    count: 3  // 出现次数
+  },
+  {
+    pattern: "工具参数类型错误",
+    trigger: "日期格式不匹配",
+    solution: "增加日期格式转换步骤",
+    count: 5
+  }
+]
+</code></pre>
+
+<h2>5.3 高阶互评</h2>
+
+<h3>5.3.1 双Agent交叉校验</h3>
+<ul>
+<li>Agent A 生成答案</li>
+<li>Agent B 作为"审核员"独立检查</li>
+<li>Agent B 发现问题 → 反馈给 Agent A 修改</li>
+<li>两个Agent意见不一致 → 引入第三个仲裁</li>
+</ul>
+
+<h3>5.3.2 多轮自我修正重执行</h3>
+<ol>
+<li>第一次执行 → 得到结果R1</li>
+<li>自我评估R1的质量 → 发现问题P</li>
+<li>针对问题P修正后重新执行 → 得到R2</li>
+<li>再次评估 → 如果仍有问题则继续</li>
+<li>达到质量阈值或最大轮次后停止</li>
+</ol>
+
+<h2>反思系统的实际价值</h2>
+<p>没有反思系统的Agent就像一个从不复盘的人——可能会反复犯同样的错误。有了反思系统：</p>
+<ul>
+<li>同类错误的发生率持续下降</li>
+<li>输出质量的稳定性显著提高</li>
+<li>面对新场景的适应能力增强</li>
+<li>用户的信任度逐步建立</li>
+</ul>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第2章最后一节，下一章：主流开发框架。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch2-module-tool-calling.html">&larr; 上一篇：工具调用系统 Tool Calling</a><a href="ch3-frameworks-lowcode.html">下一篇：低代码/平台化Agent开发框架 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
