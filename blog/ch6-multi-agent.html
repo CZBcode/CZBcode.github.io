@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第6章 · 多Agent高阶系统 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第6章 · 多Agent高阶系统</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">多Agent角色体系（决策者/检索执行/代码开发/审核校验/调度管理）、中心化调度vs去中心化协商、通信协议与权限隔离。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>从单Agent到多Agent</h2>
+<p>当任务复杂度超过单个Agent的能力边界时，就需要多Agent协作。就像现实世界一样——一个人搞不定的事，就组个团队来做。</p>
+
+<h2>7.1 多Agent分工体系</h2>
+
+<h3>7.1.1 决策者Agent（The Orchestrator）</h3>
+<ul>
+<li><strong>职责</strong>：理解用户意图，拆解任务，分配给合适的Agent</li>
+<li><strong>能力</strong>：全局视野、任务规划、质量控制</li>
+<li><strong>类比</strong>：项目经理 / 产品经理</li>
+</ul>
+
+<h3>7.1.2 检索执行Agent（The Retriever）</h3>
+<ul>
+<li><strong>职责</strong>：从知识库、搜索引擎、数据库中检索信息</li>
+<li><strong>能力</strong>：RAG、搜索、数据查询</li>
+<li><strong>类比</strong>：研究员 / 图书管理员</li>
+</ul>
+
+<h3>7.1.3 代码开发Agent（The Coder）</h3>
+<ul>
+<li><strong>职责</strong>：编写、修改、调试代码</li>
+<li><strong>能力</strong>：代码生成、Code Review、Bug修复</li>
+<li><strong>类比</strong>：软件工程师</li>
+</ul>
+
+<h3>7.1.4 审核校验Agent（The Reviewer）</h3>
+<ul>
+<li><strong>职责</strong>：检查其他Agent的输出质量</li>
+<li><strong>能力</strong>：事实核查、安全审计、格式校验</li>
+<li><strong>类比</strong>：QA工程师 / 审计师</li>
+</ul>
+
+<h3>7.1.5 调度管理Agent（The Coordinator）</h3>
+<ul>
+<li><strong>职责</strong>：管理Agent之间的消息传递、状态同步、异常处理</li>
+<li><strong>能力</strong>：任务分发、进度跟踪、冲突解决</li>
+<li><strong>类比</strong>：Scrum Master / 团队协调人</li>
+</ul>
+
+<h2>7.2 协作模式</h2>
+
+<h3>7.2.1 中心化统一调度</h3>
+<p>有一个主控Agent负责全局调度：</p>
+<pre><code>用户请求
+    ↓
+[主控Agent] ←── 分析任务，制定计划
+    ├──→ [检索Agent] → 返回参考资料
+    ├──→ [代码Agent] → 编写解决方案
+    └──→ [审核Agent] → 检查质量
+    ↓
+[主控Agent] ←── 汇总结果，生成最终回答
+    ↓
+返回给用户
+</code></pre>
+<ul>
+<li><strong>优点</strong>：流程清晰、易于调试、适合流程明确的任务</li>
+<li><strong>缺点</strong>：主控Agent成为瓶颈、灵活性有限</li>
+</ul>
+
+<h3>7.2.2 去中心化自主协商</h3>
+<p>各Agent平等交流，自主决定行为：</p>
+<ul>
+<li>Agent之间通过消息总线通信</li>
+<li>每个Agent自主决定是否参与、贡献什么</li>
+<li>通过多轮协商达成共识</li>
+<li><strong>优点</strong>：灵活、鲁棒、适合开放式问题</li>
+<li><strong>缺点</strong>：难以预测、调试困难、可能陷入死循环</li>
+</ul>
+
+<h2>7.3 通信与协议</h2>
+
+<h3>7.3.1 统一消息格式</h3>
+<pre><code>{
+  "message_id": "msg_001",
+  "sender": "orchestrator",
+  "receiver": "retriever",
+  "message_type": "task_request",
+  "payload": {
+    "query": "查找2024年Q4的销售数据",
+    "sources": ["database", "api"],
+    "deadline": "30s"
+  },
+  "timestamp": "2026-06-01T16:00:00Z"
+}
+</code></pre>
+
+<h3>7.3.2 权限隔离</h3>
+<ul>
+<li>每个Agent只能访问被授权的工具和数据</li>
+<li>代码Agent不能直接操作生产数据库</li>
+<li>检索Agent不能执行任意代码</li>
+<li>最小权限原则，防止误操作和安全风险</li>
+</ul>
+
+<h3>7.3.3 任务分片</h3>
+<ul>
+<li>大任务拆分为小的、独立的子任务</li>
+<li>子任务可以并行执行</li>
+<li>每个子任务有明确的输入输出规范</li>
+<li>支持部分失败（某个子任务失败不影响整体）</li>
+</ul>
+
+<h3>7.3.4 状态同步</h3>
+<ul>
+<li>共享的状态存储（如Redis）记录全局进度</li>
+<li>每个Agent更新自己的状态</li>
+<li>其他Agent可以订阅状态变更</li>
+<li>异常状态触发告警和干预</li>
+</ul>
+
+<h3>7.3.5 异常同步</h3>
+<ul>
+<li>某个Agent失败时立即通知相关Agent</li>
+<li>触发重试或降级策略</li>
+<li>必要时升级为人工处理</li>
+</ul>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第6章，下一章：业务落地场景。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch5-deployment-architecture.html">&larr; 上一篇：服务部署架构</a><a href="ch7-scenarios.html">下一篇：第7章 · 业务落地场景 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
