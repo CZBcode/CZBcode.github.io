@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第7章 · 业务落地场景 - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第7章 · 业务落地场景</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">智能办公Agent（文档总结/日程规划/邮件处理）、研发工程Agent（代码生成/排查/单测/调试）、企业知识库Agent、数据分析Agent（NL2SQL/报表/洞察）。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>Agent落地的四大方向</h2>
+<p>理论讲完了，Agent到底能用在哪里？以下是四个最成熟的落地场景。</p>
+
+<h2>8.1 智能办公Agent</h2>
+
+<h3>8.1.1 文档总结、改写、翻译</h3>
+<ul>
+<li>上传一份长报告 → 自动生成 Executive Summary</li>
+<li>技术文档翻译（中英互译，保持术语一致性）</li>
+<li>会议纪要整理（录音转文字 → 提炼要点 → 分配待办）</li>
+<li>合同/法规文档的关键条款提取</li>
+</ul>
+
+<h3>8.1.2 日程规划</h3>
+<ul>
+<li>"帮我安排明天和产品团队的会议" → 自动查找空闲时间、发送邀请</li>
+<li>冲突检测和自动调整</li>
+<li>结合交通时间和优先级优化日程</li>
+</ul>
+
+<h3>8.1.3 邮件处理</h3>
+<ul>
+<li>邮件分类（紧急/普通/垃圾）</li>
+<li>自动起草回复（用户确认后发送）</li>
+<li>邮件摘要（每天早上推送昨日重要邮件）</li>
+<li>跟进提醒（"你3天前发的邮件还没收到回复"）</li>
+</ul>
+
+<h3>8.1.4 办公自动化流程</h3>
+<ul>
+<li>报销审批流程（自动核对发票 → 填写报销单 → 提交审批）</li>
+<li>周报自动生成（汇总本周完成的任务、代码提交、会议记录）</li>
+<li>新人入职指引（自动发送入职清单、账号申请、培训材料）</li>
+</ul>
+
+<h2>8.2 研发工程Agent</h2>
+
+<h3>8.2.1 代码生成</h3>
+<ul>
+<li>自然语言 → 代码（"写一个Python的REST API"）</li>
+<li>单元测试自动生成</li>
+<li>接口文档（Swagger/OpenAPI）自动生成</li>
+<li>SQL查询语句生成</li>
+</ul>
+
+<h3>8.2.2 代码排查</h3>
+<ul>
+<li>报错信息 → 分析原因 → 给出修复建议</li>
+<li>Log分析（"为什么昨晚2点的请求全部超时？"）</li>
+<li>性能瓶颈定位（"这个接口为什么这么慢？"）</li>
+</ul>
+
+<h3>8.2.3 自动单测</h3>
+<ul>
+<li>为现有代码生成单元测试</li>
+<li>测试覆盖率分析和补充</li>
+<li>回归测试自动执行</li>
+</ul>
+
+<h3>8.2.4 接口调试</h3>
+<ul>
+<li>根据API文档自动构造测试请求</li>
+<li>分析响应数据的合理性</li>
+<li>生成Postman/Insomnia集合</li>
+</ul>
+
+<h3>8.2.5 工单自动化处理</h3>
+<ul>
+<li>Bug工单自动分类和指派</li>
+<li>重复工单检测和合并</li>
+<li>工单状态跟踪和升级提醒</li>
+</ul>
+
+<h2>8.3 企业知识库Agent</h2>
+
+<h3>8.3.1 私有知识问答</h3>
+<ul>
+<li>"公司的年假政策是什么？" → 从HR手册中找到答案</li>
+<li>"怎么配置VPN？" → 从IT文档中找到步骤</li>
+<li>"上个季度的销售目标是多少？" → 从内部报告中找到数据</li>
+</ul>
+
+<h3>8.3.2 智能客服</h3>
+<ul>
+<li>7x24小时自动应答</li>
+<li>多轮对话上下文理解</li>
+<li>无法回答时无缝转人工</li>
+<li>常见问题自动更新知识库</li>
+</ul>
+
+<h3>8.3.3 问题溯源</h3>
+<ul>
+<li>"这个功能为什么这样设计？" → 找到相关的PR和设计文档</li>
+<li>"这个bug之前出现过吗？" → 搜索历史工单</li>
+</ul>
+
+<h2>8.4 数据分析Agent</h2>
+
+<h3>8.4.1 自然语言转SQL（NL2SQL）</h3>
+<ul>
+<li>"上个月销售额最高的5个产品" → 自动生成SQL</li>
+<li>支持复杂查询（JOIN、GROUP BY、窗口函数）</li>
+<li>查询结果自动可视化为图表</li>
+</ul>
+
+<h3>8.4.2 自动报表</h3>
+<ul>
+<li>定时生成日报/周报/月报</li>
+<li>异常数据自动标注和预警</li>
+<li>支持多格式输出（HTML、PDF、Excel）</li>
+</ul>
+
+<h3>8.4.3 数据洞察</h3>
+<ul>
+<li>"为什么本周的用户留存率下降了？" → 自动分析可能原因</li>
+<li>趋势分析和预测</li>
+<li>A/B测试结果解读</li>
+</ul>
+
+<h2>落地建议</h2>
+<ol>
+<li><strong>从小场景开始</strong>：不要一上来就做大而全的系统</li>
+<li><strong>重视反馈闭环</strong>：收集用户反馈，持续优化</li>
+<li><strong>做好兜底</strong>：Agent不可能100%正确，要有降级方案</li>
+<li><strong>度量效果</strong>：建立清晰的评估指标，用数据说话</li>
+</ol>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第7章，下一章：行业核心痛点与解决方案。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch6-multi-agent.html">&larr; 上一篇：第6章 · 多Agent高阶系统</a><a href="ch8-pain-points-solutions.html">下一篇：第8章 · 行业核心痛点与解决方案 &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
