@@ -270,13 +270,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // ===== 配置 marked.js =====
 marked.setOptions({
   breaks: true,
-  gfm: true,
-  highlight: function(code, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      return hljs.highlight(code, { language: lang }).value;
-    }
-    return hljs.highlightAuto(code).value;
-  }
+  gfm: true
 });
 
 // ===== 主流程 =====
