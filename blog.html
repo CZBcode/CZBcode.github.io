@@ -20,9 +20,7 @@
       overflow: hidden;
       transition: border-color 0.3s ease;
     }
-    .kb-chapter:hover {
-      border-color: rgba(79,195,247,0.28);
-    }
+    .kb-chapter:hover { border-color: rgba(79,195,247,0.28); }
 
     /* 章节头部 - 可点击折叠 */
     .kb-chapter-header {
@@ -34,9 +32,7 @@
       user-select: none;
       transition: background 0.2s ease;
     }
-    .kb-chapter-header:hover {
-      background: rgba(79,195,247,0.05);
-    }
+    .kb-chapter-header:hover { background: rgba(79,195,247,0.05); }
 
     /* 章节编号 */
     .kb-chapter-num {
@@ -53,12 +49,7 @@
     }
 
     /* 章节标题 */
-    .kb-chapter-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #e8e8e8;
-      flex: 1;
-    }
+    .kb-chapter-title { font-size: 1rem; font-weight: 600; color: #e8e8e8; flex: 1; }
 
     /* 文章计数 + 折叠箭头 */
     .kb-chapter-meta {
@@ -69,36 +60,16 @@
       font-size: 0.82rem;
       flex-shrink: 0;
     }
-    .kb-chapter-count {
-      color: #888;
-    }
-    .kb-chevron {
-      width: 16px;
-      height: 16px;
-      transition: transform 0.3s ease;
-      color: #555;
-    }
-    .kb-chapter.open .kb-chevron {
-      transform: rotate(180deg);
-      color: #4fc3f7;
-    }
+    .kb-chapter-count { color: #888; }
+    .kb-chevron { width: 16px; height: 16px; transition: transform 0.3s ease; color: #555; }
+    .kb-chapter.open .kb-chevron { transform: rotate(180deg); color: #4fc3f7; }
 
-    /* 章章内容区（子文章列表） */
-    .kb-chapter-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-    }
-    .kb-chapter.open .kb-chapter-body {
-      max-height: 2000px;
-    }
+    /* 章节内容区 */
+    .kb-chapter-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .kb-chapter.open .kb-chapter-body { max-height: 2000px; }
 
     /* 子文章项 */
-    .kb-article-list {
-      list-style: none;
-      padding: 0 0 0.75rem;
-      margin: 0;
-    }
+    .kb-article-list { list-style: none; padding: 0 0 0.75rem; margin: 0; }
     .kb-article-item {
       display: flex;
       align-items: center;
@@ -115,53 +86,23 @@
       border-left-color: rgba(79,195,247,0.4);
     }
     .kb-article-dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: #444;
       margin-right: 0.85rem;
       flex-shrink: 0;
       transition: background 0.2s ease;
     }
-    .kb-article-item:hover .kb-article-dot {
-      background: #4fc3f7;
-      box-shadow: 0 0 6px rgba(79,195,247,0.5);
-    }
-    .kb-article-name {
-      flex: 1;
-    }
-    .kb-article-arrow {
-      opacity: 0;
-      font-size: 0.78rem;
-      color: #4fc3f7;
-      transition: opacity 0.2s ease;
-    }
-    .kb-article-item:hover .kb-article-arrow {
-      opacity: 1;
-    }
+    .kb-article-item:hover .kb-article-dot { background: #4fc3f7; box-shadow: 0 0 6px rgba(79,195,247,0.5); }
+    .kb-article-name { flex: 1; }
+    .kb-article-arrow { opacity: 0; font-size: 0.78rem; color: #4fc3f7; transition: opacity 0.2s ease; }
+    .kb-article-item:hover .kb-article-arrow { opacity: 1; }
 
     /* 页面标题区域 */
-    .kb-hero {
-      text-align: center;
-      padding: 3rem 0 2rem;
-    }
-    .kb-hero-label {
-      color: #4fc3f7;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.5rem;
-    }
-    .kb-hero-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .kb-hero-desc {
-      color: #888;
-      font-size: 0.95rem;
-    }
+    .kb-hero { text-align: center; padding: 3rem 0 2rem; }
+    .kb-hero-label { color: #4fc3f7; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+    .kb-hero-title { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .kb-hero-desc { color: #888; font-size: 0.95rem; }
 
     /* 统计条 */
     .kb-stats {
@@ -173,26 +114,18 @@
       border-top: 1px solid rgba(255,255,255,0.06);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .kb-stat {
-      text-align: center;
-    }
-    .kb-stat-num {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #4fc3f7;
-    }
-    .kb-stat-label {
-      font-size: 0.78rem;
-      color: #777;
-      margin-top: 0.15rem;
-    }
+    .kb-stat { text-align: center; }
+    .kb-stat-num { font-size: 1.5rem; font-weight: 700; color: #4fc3f7; }
+    .kb-stat-label { font-size: 0.78rem; color: #777; margin-top: 0.15rem; }
 
-    /* 全部展开/收起按钮 */
+    /* 全部展开/收起按钮 + 视图切换 */
     .kb-actions {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 0.75rem;
       margin: 1.5rem 0;
+      flex-wrap: wrap;
     }
     .kb-btn {
       padding: 0.45rem 1.2rem;
@@ -204,9 +137,90 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .kb-btn:hover {
+    .kb-btn:hover { background: rgba(79,195,247,0.1); border-color: rgba(79,195,247,0.5); }
+    .kb-btn.active { background: rgba(79,195,247,0.15); border-color: rgba(79,195,247,0.6); }
+    .kb-divider { color: #444; font-size: 0.8rem; }
+
+    /* ===== 文章列表视图 ===== */
+    #view-list { display: none; }
+    .post-list-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(79,195,247,0.1);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+    .post-list-item:hover {
+      border-color: rgba(79,195,247,0.35);
+      background: rgba(79,195,247,0.04);
+      transform: translateX(4px);
+    }
+    .pli-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e8e8e8;
+      transition: color 0.2s;
+    }
+    .post-list-item:hover .pli-title { color: #4fc3f7; }
+    .pli-desc { font-size: 0.86rem; color: #888; line-height: 1.6; }
+    .pli-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.78rem;
+      color: #666;
+      margin-top: 0.15rem;
+    }
+    .pli-tag {
       background: rgba(79,195,247,0.1);
-      border-color: rgba(79,195,247,0.5);
+      color: #4fc3f7;
+      padding: 0.1rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+    }
+    .pli-series { color: #555; font-style: italic; }
+
+    /* 加载状态 */
+    .loading-inline {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .loading-spinner-sm {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(79,195,247,0.2);
+      border-top-color: #4fc3f7;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 新文章提示 */
+    .new-post-hint {
+      text-align: center;
+      padding: 1.5rem;
+      color: #555;
+      font-size: 0.85rem;
+      border: 1px dashed rgba(79,195,247,0.15);
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    .new-post-hint code {
+      background: rgba(79,195,247,0.1);
+      color: #4fc3f7;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
     }
 
     @media (max-width: 600px) {
@@ -239,189 +253,206 @@
 </nav>
 
 <main>
-  <!-- Hero -->
   <div class="kb-container">
     <div class="kb-hero">
       <div class="kb-hero-label">// 技术笔记</div>
       <h1 class="kb-hero-title">Agent开发工程师知识体系</h1>
       <p class="kb-hero-desc">完整的Agent开发学习路线，从基础理论到业务落地</p>
       <div class="kb-stats">
-        <div class="kb-stat"><div class="kb-stat-num">9</div><div class="kb-stat-label">章节</div></div>
-        <div class="kb-stat"><div class="kb-stat-num">19</div><div class="kb-stat-label">篇文章</div></div>
+        <div class="kb-stat"><div class="kb-stat-num" id="stat-chapters">9</div><div class="kb-stat-label">章节</div></div>
+        <div class="kb-stat"><div class="kb-stat-num" id="stat-posts">—</div><div class="kb-stat-label">篇文章</div></div>
         <div class="kb-stat"><div class="kb-stat-num">68K+</div><div class="kb-stat-label">字</div></div>
       </div>
     </div>
 
     <div class="kb-actions">
+      <!-- 视图切换 -->
+      <button class="kb-btn active" id="btn-outline" onclick="switchView('outline')">📚 知识体系</button>
+      <button class="kb-btn" id="btn-list" onclick="switchView('list')">📋 文章列表</button>
+      <span class="kb-divider">|</span>
+      <!-- 折叠控制（仅在大纲视图下生效） -->
       <button class="kb-btn" onclick="expandAll()">展开全部 ▼</button>
       <button class="kb-btn" onclick="collapseAll()">收起全部 ▲</button>
     </div>
 
-    <!-- 第0章 -->
-    <div class="kb-chapter open">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH0</span>
-        <span class="kb-chapter-title">前置知识基础</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">1篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch0-basics-llm-theory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">大模型基础理论 — Transformer自注意力 / Token机制 / 采样策略 / Prompt工程</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
+    <!-- ===== 知识体系大纲视图（原有结构，链接改为 post.html?p=） ===== -->
+    <div id="view-outline">
 
-    <!-- 第1章 -->
-    <div class="kb-chapter open">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH1</span>
-        <span class="kb-chapter-title">Agent核心理论架构</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">3篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第0章 -->
+      <div class="kb-chapter open">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH0</span>
+          <span class="kb-chapter-title">前置知识基础</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">1篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch0-basics-llm-theory" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">大模型基础理论 — Transformer自注意力 / Token机制 / 采样策略 / Prompt工程</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch1-architecture-five-capabilities.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 五大核心原能力 — 自主规划 / 分层记忆 / 工具调用 / 反思纠错 / 环境感知</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch1-architecture-three-layer.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 三层经典架构 — 感知层 / 决策层 / 执行层 与 循环协作流程</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch1-architecture-paradigms.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 主流架构范式 — ReAct / CoT / ToT 单Agent范式 &amp; 多Agent协作模式</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第2章 -->
-    <div class="kb-chapter open">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH2</span>
-        <span class="kb-chapter-title">四大核心能力模块</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">4篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第1章 -->
+      <div class="kb-chapter open">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH1</span>
+          <span class="kb-chapter-title">Agent核心理论架构</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">3篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch1-architecture-five-capabilities" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 五大核心原能力 — 自主规划 / 分层记忆 / 工具调用 / 反思纠错 / 环境感知</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch1-architecture-three-layer" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 三层经典架构 — 感知层 / 决策层 / 执行层 与 循环协作流程</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch1-architecture-paradigms" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 主流架构范式 — ReAct / CoT / ToT 单Agent范式 &amp; 多Agent协作模式</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch2-module-memory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 记忆系统 Memory — 短时记忆 / 长时向量记忆 / 结构化实体记忆三层架构</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-planning.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 规划推理系统 Planning — CoT/ToT/GoT / Plan-and-Execute / AutoGPT / BabyAGI</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-tool-calling.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 工具调用系统 Tool Calling — JSON Schema规范 / 参数校验 / 编排与降级</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-reflection.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(4) 反思校验系统 Reflection — 结果自检 / 执行复盘 / 双Agent交叉校验</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第3章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH5</span>
-        <span class="kb-chapter-title">工程部署和性能优化</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">3篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第2章 -->
+      <div class="kb-chapter open">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH2</span>
+          <span class="kb-chapter-title">四大核心能力模块</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">4篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch2-module-memory" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 记忆系统 Memory — 短时记忆 / 长时向量记忆 / 结构化实体记忆三层架构</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch2-module-planning" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 规划推理系统 Planning — CoT/ToT/GoT / Plan-and-Execute / AutoGPT / BabyAGI</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch2-module-tool-calling" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 工具调用系统 Tool Calling — JSON Schema规范 / 参数校验 / 编排与降级</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch2-module-reflection" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(4) 反思校验系统 Reflection — 结果自检 / 执行复盘 / 双Agent交叉校验</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch5-deployment-performance.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 性能优化方案 — 缓存优化 / 推理加速(vLLM/SGLang) / 上下文智能裁剪</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch5-deployment-monitoring.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 可观测监控体系 — 全链路日志埋点 / 核心指标统计 / 异常告警机制</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch5-deployment-architecture.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 服务部署架构 — FastAPI封装 / Docker容器化 / 高可用架构设计</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第4章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH4</span>
-        <span class="kb-chapter-title">增强技术栈（RAG / 微调 / 多模态）</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">3篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第3章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH3</span>
+          <span class="kb-chapter-title">主流开发框架</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">2篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch3-frameworks-lowcode" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 低代码/平台化框架 — Dify / FastGPT / Coze扣子 / FlowUs 选型指南</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch3-frameworks-code-level" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 代码级开源框架 — LangChain / LlamaIndex / AutoGen / CrewAI 深度对比</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch4-enhanced-rag.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) RAG检索增强生成 — 文档预处理 / 双路召回(BM25+FAISS) / Rerank重排序</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch4-enhanced-finetune.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 模型微调定制 — SFT / LoRA轻量化微调 / DPO偏好对齐 / GGUF量化部署</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch4-enhanced-multimodal.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 多模态Agent — 视觉理解+OCR / ASR语音转文字 / TTS语音合成</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第3章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH3</span>
-        <span class="kb-chapter-title">主流开发框架</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">2篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第4章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH4</span>
+          <span class="kb-chapter-title">增强技术栈（RAG / 微调 / 多模态）</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">3篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch4-enhanced-rag" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) RAG检索增强生成 — 文档预处理 / 双路召回(BM25+FAISS) / Rerank重排序</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch4-enhanced-finetune" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 模型微调定制 — SFT / LoRA轻量化微调 / DPO偏好对齐 / GGUF量化部署</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch4-enhanced-multimodal" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 多模态Agent — 视觉理解+OCR / ASR语音转文字 / TTS语音合成</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch3-frameworks-lowcode.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 低代码/平台化框架 — Dify / FastGPT / Coze扣子 / FlowUs 选型指南</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch3-frameworks-code-level.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 代码级开源框架 — LangChain / LlamaIndex / AutoGen / CrewAI 深度对比</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第2章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH2</span>
-        <span class="kb-chapter-title">四大核心能力模块</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">4篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第5章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH5</span>
+          <span class="kb-chapter-title">工程部署和性能优化</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">3篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch5-deployment-performance" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 性能优化方案 — 缓存优化 / 推理加速(vLLM/SGLang) / 上下文智能裁剪</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch5-deployment-monitoring" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 可观测监控体系 — 全链路日志埋点 / 核心指标统计 / 异常告警机制</span><span class="kb-article-arrow">→</span></a></li>
+            <li><a href="post.html?p=ch5-deployment-architecture" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 服务部署架构 — FastAPI封装 / Docker容器化 / 高可用架构设计</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch2-module-memory.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 记忆系统 Memory — 短时记忆 / 长时向量记忆 / 结构化实体记忆三层架构</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-planning.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 规划推理系统 Planning — CoT/ToT/GoT / Plan-and-Execute / AutoGPT / BabyAGI</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-tool-calling.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 工具调用系统 Tool Calling — JSON Schema规范 / 参数校验 / 编排与降级</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch2-module-reflection.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(4) 反思校验系统 Reflection — 结果自检 / 执行复盘 / 双Agent交叉校验</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第1章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH1</span>
-        <span class="kb-chapter-title">Agent核心理论架构</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">3篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第6章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH6</span>
+          <span class="kb-chapter-title">多Agent协作系统</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">1篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch6-multi-agent" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">多Agent架构设计、任务分发与协作通信机制</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch1-architecture-five-capabilities.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(1) 五大核心原能力 — 自主规划 / 分层记忆 / 工具调用 / 反思纠错 / 环境感知</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch1-architecture-three-layer.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(2) 三层经典架构 — 感知层 / 决策层 / 执行层 与 循环协作流程</span><span class="kb-article-arrow">→</span></a></li>
-          <li><a href="blog/ch1-architecture-paradigms.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">(3) 主流架构范式 — ReAct / CoT / ToT 单Agent范式 &amp; 多Agent协作模式</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 第8章 -->
-    <div class="kb-chapter">
-      <div class="kb-chapter-header" onclick="toggleChapter(this)">
-        <span class="kb-chapter-num">CH8</span>
-        <span class="kb-chapter-title">行业核心痛点与解决方案</span>
-        <div class="kb-chapter-meta">
-          <span class="kb-chapter-count">1篇</span>
-          <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- 第7章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH7</span>
+          <span class="kb-chapter-title">行业核心落地场景</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">1篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch7-scenarios" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">客服Agent / 代码助手 / 数据分析Agent 等典型场景设计模式</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
         </div>
       </div>
-      <div class="kb-chapter-body">
-        <ul class="kb-article-list">
-          <li><a href="blog/ch8-pain-points-solutions.html" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">模型幻觉 · 上下文超限 · 工具误调用 · 执行不稳定——四大痛点的根因分析与解决方案</span><span class="kb-article-arrow">→</span></a></li>
-        </ul>
+
+      <!-- 第8章 -->
+      <div class="kb-chapter">
+        <div class="kb-chapter-header" onclick="toggleChapter(this)">
+          <span class="kb-chapter-num">CH8</span>
+          <span class="kb-chapter-title">行业核心痛点与解决方案</span>
+          <div class="kb-chapter-meta">
+            <span class="kb-chapter-count">1篇</span>
+            <svg class="kb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="kb-chapter-body">
+          <ul class="kb-article-list">
+            <li><a href="post.html?p=ch8-pain-points-solutions" class="kb-article-item"><span class="kb-article-dot"></span><span class="kb-article-name">模型幻觉 · 上下文超限 · 工具误调用 · 执行不稳定——四大痛点的根因分析与解决方案</span><span class="kb-article-arrow">→</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- end #view-outline -->
+
+    <!-- ===== 文章列表视图（从 posts.json 动态渲染） ===== -->
+    <div id="view-list">
+      <div id="post-list-container">
+        <div class="loading-inline">
+          <span class="loading-spinner-sm"></span>加载文章列表中…
+        </div>
+      </div>
+
+      <div class="new-post-hint">
+        ✍️ 新增文章只需：在 <code>posts/</code> 目录新建 <code>.md</code> 文件，并在 <code>posts.json</code> 添加一条记录即可。
       </div>
     </div>
 
@@ -443,21 +474,77 @@
   </div>
 </footer>
 
+<script src="js/main.js"></script>
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  function toggleChapter(header) {
-    var chapter = header.parentElement;
-    chapter.classList.toggle('open');
-  }
+// ===== 章节折叠 =====
+function toggleChapter(header) {
+  header.parentElement.classList.toggle('open');
+}
+function expandAll() {
+  document.querySelectorAll('.kb-chapter').forEach(el => el.classList.add('open'));
+}
+function collapseAll() {
+  document.querySelectorAll('.kb-chapter').forEach(el => el.classList.remove('open'));
+}
 
-  function expandAll() {
-    document.querySelectorAll('.kb-chapter').forEach(function(el) { el.classList.add('open'); });
-  }
+// ===== 视图切换 =====
+function switchView(view) {
+  document.getElementById('view-outline').style.display = view === 'outline' ? '' : 'none';
+  document.getElementById('view-list').style.display = view === 'list' ? '' : 'none';
+  document.getElementById('btn-outline').classList.toggle('active', view === 'outline');
+  document.getElementById('btn-list').classList.toggle('active', view === 'list');
+  if (view === 'list' && !window._postsLoaded) loadPostList();
+}
 
-  function collapseAll() {
-    document.querySelectorAll('.kb-chapter').forEach(function(el) { el.classList.remove('open'); });
+// ===== 从 posts.json 动态渲染文章列表 =====
+async function loadPostList() {
+  window._postsLoaded = true;
+  const container = document.getElementById('post-list-container');
+  try {
+    const resp = await fetch('posts.json?_=' + Date.now());
+    if (!resp.ok) throw new Error('无法加载 posts.json');
+    const data = await resp.json();
+    const posts = data.posts || [];
+
+    // 更新统计数字
+    document.getElementById('stat-posts').textContent = posts.length;
+
+    if (posts.length === 0) {
+      container.innerHTML = '<div class="loading-inline">暂无文章</div>';
+      return;
+    }
+
+    container.innerHTML = posts.map(p => `
+      <a href="post.html?p=${p.slug}" class="post-list-item">
+        <div class="pli-title">${escHtml(p.title || p.slug)}</div>
+        ${p.description ? `<div class="pli-desc">${escHtml(p.description)}</div>` : ''}
+        <div class="pli-meta">
+          ${p.date ? `<span>📅 ${escHtml(p.date)}</span>` : ''}
+          ${p.category ? `<span class="pli-tag">${escHtml(p.category)}</span>` : ''}
+          ${p.series ? `<span class="pli-series">${escHtml(p.series)}</span>` : ''}
+        </div>
+      </a>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<div class="loading-inline" style="color:#ff7b7b;">⚠️ 加载失败：' + escHtml(err.message) + '</div>';
   }
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// 初始化：预加载文章数，更新统计
+(async () => {
+  try {
+    const resp = await fetch('posts.json?_=' + Date.now());
+    if (!resp.ok) return;
+    const data = await resp.json();
+    document.getElementById('stat-posts').textContent = (data.posts || []).length;
+  } catch(e) {}
+})();
 </script>
 
 </body>
