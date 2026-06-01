@@ -1,0 +1,200 @@
+{
+  "posts": [
+    {
+      "slug": "ch0-basics-llm-theory",
+      "title": "第0章 · 前置知识基础 — 大模型基础理论",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "Transformer核心原理、Token机制与上下文窗口限制、采样策略（温度/TopP/TopK）、Prompt工程、Function Calling、CoT思维链等Agent开发必备基础理论。",
+      "next": "ch1-architecture-five-capabilities",
+      "nextTitle": "第1章 · 五大核心原能力"
+    },
+    {
+      "slug": "ch1-architecture-five-capabilities",
+      "title": "第1章 · Agent核心理论架构 — 五大核心原能力",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "自主规划、分层记忆、工具调用、反思纠错、环境感知——Agent的五大核心原生能力详解。",
+      "next": "ch1-architecture-three-layer",
+      "nextTitle": "第1章 · 三层经典架构"
+    },
+    {
+      "slug": "ch1-architecture-three-layer",
+      "title": "第1章 · Agent核心理论架构 — 三层经典架构",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "感知层、决策层、执行层的三层架构设计，以及Agent的循环协作流程。",
+      "next": "ch1-architecture-paradigms",
+      "nextTitle": "第1章 · 主流架构范式"
+    },
+    {
+      "slug": "ch1-architecture-paradigms",
+      "title": "第1章 · Agent核心理论架构 — 主流架构范式",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "ReAct、CoT、ToT单Agent范式 & 多Agent协作模式的深度解析。",
+      "next": "ch2-module-memory",
+      "nextTitle": "第2章 · 记忆系统"
+    },
+    {
+      "slug": "ch2-module-memory",
+      "title": "第2章 · 四大核心能力模块 — 记忆系统 Memory",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "短时记忆、长时向量记忆、结构化实体记忆三层架构详解，从理论到实现。",
+      "next": "ch2-module-planning",
+      "nextTitle": "第2章 · 规划推理系统"
+    },
+    {
+      "slug": "ch2-module-planning",
+      "title": "第2章 · 四大核心能力模块 — 规划推理系统 Planning",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "CoT/ToT/GoT、Plan-and-Execute、AutoGPT、BabyAGI规划方案的全面对比与实战指导。",
+      "next": "ch2-module-tool-calling",
+      "nextTitle": "第2章 · 工具调用系统"
+    },
+    {
+      "slug": "ch2-module-tool-calling",
+      "title": "第2章 · 四大核心能力模块 — 工具调用系统 Tool Calling",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "JSON Schema规范、参数校验、工具编排与降级策略，构建稳定的工具调用体系。",
+      "next": "ch2-module-reflection",
+      "nextTitle": "第2章 · 反思校验系统"
+    },
+    {
+      "slug": "ch2-module-reflection",
+      "title": "第2章 · 四大核心能力模块 — 反思校验系统 Reflection",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "结果自检、执行复盘、双Agent交叉校验——让Agent具备自我纠错和持续改进的能力。",
+      "next": "ch3-frameworks-lowcode",
+      "nextTitle": "第3章 · 低代码平台化框架"
+    },
+    {
+      "slug": "ch3-frameworks-lowcode",
+      "title": "第3章 · 主流开发框架 — 低代码/平台化框架",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "Dify、FastGPT、Coze扣子、FlowUs选型指南，帮你快速找到适合业务场景的低代码框架。",
+      "next": "ch3-frameworks-code-level",
+      "nextTitle": "第3章 · 代码级开源框架"
+    },
+    {
+      "slug": "ch3-frameworks-code-level",
+      "title": "第3章 · 主流开发框架 — 代码级开源框架",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "LangChain、LlamaIndex、AutoGen、CrewAI深度对比，代码级框架的选型与实战指南。",
+      "next": "ch4-enhanced-rag",
+      "nextTitle": "第4章 · RAG检索增强生成"
+    },
+    {
+      "slug": "ch4-enhanced-rag",
+      "title": "第4章 · 增强技术栈 — RAG检索增强生成",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "文档预处理、双路召回(BM25+FAISS)、Rerank重排序——构建高质量RAG系统的完整方案。",
+      "next": "ch4-enhanced-finetune",
+      "nextTitle": "第4章 · 模型微调定制"
+    },
+    {
+      "slug": "ch4-enhanced-finetune",
+      "title": "第4章 · 增强技术栈 — 模型微调定制",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "SFT、LoRA轻量化微调、DPO偏好对齐、GGUF量化部署——从原理到落地的微调全攻略。",
+      "next": "ch4-enhanced-multimodal",
+      "nextTitle": "第4章 · 多模态Agent"
+    },
+    {
+      "slug": "ch4-enhanced-multimodal",
+      "title": "第4章 · 增强技术栈 — 多模态Agent",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "视觉理解+OCR、ASR语音转文字、TTS语音合成——构建多模态智能体的实战指南。",
+      "next": "ch5-deployment-performance",
+      "nextTitle": "第5章 · 性能优化方案"
+    },
+    {
+      "slug": "ch5-deployment-performance",
+      "title": "第5章 · 工程部署和性能优化 — 性能优化方案",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "缓存优化、推理加速(vLLM/SGLang)、上下文智能裁剪——全面提升Agent系统响应速度。",
+      "next": "ch5-deployment-monitoring",
+      "nextTitle": "第5章 · 可观测监控体系"
+    },
+    {
+      "slug": "ch5-deployment-monitoring",
+      "title": "第5章 · 工程部署和性能优化 — 可观测监控体系",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "全链路日志埋点、核心指标统计、异常告警机制——构建生产级Agent监控体系。",
+      "next": "ch5-deployment-architecture",
+      "nextTitle": "第5章 · 服务部署架构"
+    },
+    {
+      "slug": "ch5-deployment-architecture",
+      "title": "第5章 · 工程部署和性能优化 — 服务部署架构",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "FastAPI封装、Docker容器化、高可用架构设计——将Agent系统部署到生产环境的完整指南。",
+      "next": "ch6-multi-agent",
+      "nextTitle": "第6章 · 多Agent协作"
+    },
+    {
+      "slug": "ch6-multi-agent",
+      "title": "第6章 · 多Agent协作系统",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "多Agent架构设计、任务分发、协作通信机制——构建复杂多智能体系统的实战指南。",
+      "next": "ch7-scenarios",
+      "nextTitle": "第7章 · 行业落地场景"
+    },
+    {
+      "slug": "ch7-scenarios",
+      "title": "第7章 · 行业核心落地场景",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "客服Agent、代码助手、数据分析Agent等典型落地场景的设计模式与实战经验。",
+      "next": "ch8-pain-points-solutions",
+      "nextTitle": "第8章 · 四大痛点与解决方案"
+    },
+    {
+      "slug": "ch8-pain-points-solutions",
+      "title": "第8章 · 行业核心痛点与解决方案",
+      "date": "2026-06-01",
+      "category": "技术笔记",
+      "series": "Agent开发工程师知识体系",
+      "description": "模型幻觉、上下文超限、工具误调用、执行不稳定——四大痛点的根因分析与系统性解决方案。"
+    },
+    {
+      "slug": "hello-world",
+      "title": "Hello World — 博客开篇",
+      "date": "2023-05-03",
+      "category": "随笔",
+      "series": "",
+      "description": "博客第一篇，记录开始写作的初衷和计划。"
+    }
+  ]
+}
