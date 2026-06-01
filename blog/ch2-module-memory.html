@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2章 · 四大核心能力模块 — 记忆系统 Memory - 技术笔记 - Anthony's Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header { max-width: 900px; margin: 2rem auto 1rem; padding: 0 2rem; }
+        .post-header h1 { color: #4fc3f7; font-size: 2rem; border-bottom: 2px solid #4fc3f7; padding-bottom: 0.5rem; }
+        .post-meta { color: #888; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+        .post-desc { color: #ccc; line-height: 1.8; }
+        .post-body { max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .post-body h2 { color: #4fc3f7; margin-top: 2.5rem; border-left: 4px solid #4fc3f7; padding-left: 0.8rem; }
+        .post-body h3 { color: #81d4fa; margin-top: 1.5rem; }
+        .post-body p { line-height: 1.8; color: #ddd; margin: 0.8rem 0; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        .post-body li { margin: 0.4rem 0; color: #ccc; line-height: 1.6; }
+        .post-body code { color: #4fc3f7; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+        .post-body pre { background: #1a1a2e; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .post-body pre code { color: #e0e0e0; background: none; padding: 0; }
+        .post-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .post-body th, .post-body td { border: 1px solid #333; padding: 0.6rem 0.8rem; text-align: left; }
+        .post-body th { background: #1a1a2e; color: #4fc3f7; }
+        .post-body td { color: #ccc; }
+        .toc { background: #1a1a2e; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #81d4fa; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+        .back-link { display: inline-block; margin: 2rem 2rem 0; color: #4fc3f7; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+        .chapter-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; }
+        .chapter-nav a { color: #4fc3f7; text-decoration: none; }
+        .chapter-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anthony</div>
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../projects.html">技术栈</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="../blog.html" class="back-link">&larr; 返回博客列表</a>
+
+    <div class="post-header">
+        <h1>第2章 · 四大核心能力模块 — 记忆系统 Memory</h1>
+        <div class="post-meta">发布于 2026-06-01 | 分类：<span style="color:#4fc3f7;">技术笔记</span> | Agent开发学习路线</div>
+        <p class="post-desc">Agent记忆系统的三层架构：短时记忆（会话管理）、长时向量记忆（嵌入模型+向量库）、结构化实体记忆（用户画像）。</p>
+    </div>
+
+    <div class="post-body">
+
+<h2>为什么Agent需要记忆系统？</h2>
+<p>大模型的原生"记忆"只有上下文窗口，存在以下致命缺陷：</p>
+<ul>
+<li>窗口有限，装不下所有历史信息</li>
+<li>新对话会覆盖旧对话，无法跨会话保持记忆</li>
+<li>所有信息混在一起，缺乏组织结构</li>
+</ul>
+<p>因此Agent必须构建自己的记忆系统。</p>
+
+<h2>2.1 短时记忆（Short-term Memory）</h2>
+<p>管理当前会话窗口内的对话上下文。</p>
+
+<h3>核心能力</h3>
+<ul>
+<li><strong>会话上下文管理</strong>：维护当前对话的完整历史</li>
+<li><strong>滑动窗口截断</strong>：当接近窗口上限时，淘汰最早的对话</li>
+<li><strong>冗余清洗</strong>：去除重复、无意义的对话内容</li>
+<li><strong>上下文长度适配</strong>：确保总Token数不超过模型限制</li>
+</ul>
+
+<h3>典型实现</h3>
+<pre><code># 滑动窗口示例
+class SlidingWindowMemory:
+    def __init__(self, max_tokens: int = 8000):
+        self.messages = []
+        self.max_tokens = max_tokens
+    
+    def add(self, message: dict):
+        self.messages.append(message)
+        while self.count_tokens() > self.max_tokens:
+            self.messages.pop(0)  # 淘汰最早的消息
+</code></pre>
+
+<h2>2.2 长时向量记忆（Long-term Vector Memory）</h2>
+<p>将历史信息转化为向量存储，需要时通过语义相似度召回。</p>
+
+<h3>嵌入模型选择</h3>
+<ul>
+<li><strong>BGE</strong>（BAAI General Embedding）：中文效果好，开源免费</li>
+<li><strong>M3E</strong>（Moka Massive Mixed Embedding）：多语言支持</li>
+<li><strong>all-MiniLM-L6-v2</strong>：轻量级，速度快</li>
+<li><strong>OpenAI text-embedding-3</strong>：商业API，质量高</li>
+</ul>
+
+<h3>向量数据库选型</h3>
+<table>
+<tr><th>数据库</th><th>特点</th><th>适用场景</th></tr>
+<tr><td>FAISS</td><td>Meta出品，纯内存，极快</td><td>中小规模、本地部署</td></tr>
+<tr><td>Chroma</td><td>轻量级，嵌入式友好</td><td>原型开发、个人项目</td></tr>
+<tr><td>Milvus</td><td>分布式，支持十亿级向量</td><td>大规模生产环境</td></tr>
+<tr><td>Qdrant</td><td>Rust编写，高性能过滤</td><td>需要复杂过滤的场景</td></tr>
+</table>
+
+<h3>高级能力</h3>
+<ul>
+<li><strong>话题聚类</strong>：将相关记忆归类到同一主题下</li>
+<li><strong>时效权重</strong>：近期记忆权重更高，避免过时信息干扰</li>
+<li><strong>记忆归档</strong>：将低价值记忆转移到冷存储</li>
+</ul>
+
+<h2>2.3 结构化实体记忆（Entity Memory）</h2>
+<p>以结构化方式存储关键实体信息，而非原始文本。</p>
+
+<h3>核心能力</h3>
+<ul>
+<li><strong>用户画像抽取</strong>：从对话中提取用户的偏好、习惯、关系等信息</li>
+<li><strong>关键信息结构化存储</strong>：以JSON/图谱形式持久化</li>
+<li><strong>长期偏好记忆与更新</strong>：随交互不断更新用户画像</li>
+</ul>
+
+<h3>典型数据结构</h3>
+<pre><code>{
+  "user_id": "anthony_001",
+  "preferences": {
+    "programming_languages": ["Java", "Python"],
+    "topics_of_interest": ["AI Agents", "Spring Boot"],
+    "communication_style": "简洁直接"
+  },
+  "facts": [
+    {"entity": "Anthony", "relation": "works_at", "value": "云雀平台"},
+    {"entity": "Anthony", "relation": "github", "value": "CZBcode"}
+  ],
+  "last_updated": "2026-06-01"
+}
+</code></pre>
+
+<h2>三层记忆的协作</h2>
+<ol>
+<li>用户发送消息 → 进入<strong>短时记忆</strong></li>
+<li>短时记忆触发查询 → 从<strong>长时向量记忆</strong>召回相关信息</li>
+<li>从<strong>实体记忆</strong>加载用户画像和偏好</li>
+<li>三者合并后送入模型生成回复</li>
+<li>重要信息写入长时记忆和实体记忆</li>
+</ol>
+
+<hr>
+<p><em>本章为《Agent开发工程师知识体系》第2章第1节，下一节：规划推理系统 Planning。</em></p>
+
+    </div>
+
+    <div class="chapter-nav"><a href="ch1-architecture-paradigms.html">&larr; 上一篇：主流架构范式</a><a href="ch2-module-planning.html">下一篇：规划推理系统 Planning &rarr;</a></div>
+
+    <footer>
+        <p>&copy; 2026 Anthony. Built with &#10084;&#65039;</p>
+    </footer>
+</body>
+</html>
